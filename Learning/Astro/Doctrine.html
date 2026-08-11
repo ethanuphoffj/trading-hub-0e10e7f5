@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Astro Almanac — Reference, Not Rules</title>
+<style>
+  :root{
+    --bg:#0D0A0B; --surface:#151013; --raised:#1D151A; --line:#33222A;
+    --ink:#F0E8EB; --ink2:#AC9DA4; --ink3:#7A6C73;
+    --up:#26A379; --dn:#EF5350; --mar:#800020; --acc:#cc3344; --acctxt:#E56478; --gold:#E8B04B;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:48px 24px 80px}
+  a{color:var(--acctxt)}
+  header{margin-bottom:40px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--acctxt);margin-bottom:10px}
+  h1{font-size:38px;line-height:1.15;letter-spacing:-.02em;font-weight:750}
+  h1 .thin{color:var(--ink2);font-weight:400}
+  .sub{color:var(--ink2);margin-top:12px;max-width:800px}
+  .sub b{color:var(--ink)}
+  .src{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-top:14px}
+  section{margin-top:60px}
+  .daytag{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--acctxt);border:1px solid rgba(204,51,68,.45);border-radius:999px;padding:5px 14px;margin-bottom:14px}
+  h2{font-size:27px;letter-spacing:-.01em;margin-bottom:6px}
+  h4{font-size:16px;margin:22px 0 6px;color:var(--gold)}
+  .lede{color:var(--ink2);max-width:820px;margin-bottom:20px}
+  .lede b{color:var(--ink)}
+  .corerule{background:var(--raised);border:1px solid rgba(204,51,68,.5);border-radius:14px;padding:22px 24px;text-align:center;margin-bottom:18px}
+  .cr-line{font-family:var(--mono);font-size:16px;color:var(--ink);margin:3px 0}
+  @media(max-width:720px){.cr-line{font-size:13.5px}}
+  .crk{font-weight:700}
+  .crk.up{color:var(--up)} .crk.dn{color:var(--dn)} .crk.v{color:var(--gold)}
+  .cr-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink3);margin-top:10px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:14px}
+  .card p{font-size:13.5px;color:var(--ink2)}
+  .card p b{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+  td b{color:var(--ink)}
+  td .up{color:var(--up);font-weight:700} td .dn{color:var(--dn);font-weight:700} td .v{color:var(--gold);font-weight:700}
+  .tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 16px 14px;margin-top:14px}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  @media(max-width:720px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--mar);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--ink2)}
+  .rule b{color:var(--ink)}
+  .callout{background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:18px;font-size:14.5px;color:var(--ink2)}
+  .callout b{color:var(--ink)}
+  .callout .emj{margin-right:8px}
+  footer{margin-top:70px;border-top:1px solid var(--line);padding-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<!-- T1-CHECKLIST-STRIP v1.4 · synced with Learning/Checklist/Checklist.html — update every strip + the registry on each T1 rev -->
+<details style="max-width:1060px;margin:14px auto 0;padding:0;background:#12161C;border:1px solid rgba(188,131,41,.45);border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+<summary style="cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 16px;font:12px ui-monospace,'SF Mono',Menlo,monospace;color:#9AA7B4"><b style="color:#E8B04B;letter-spacing:.12em">&#9889; T1 CHECKLIST</b><span style="color:#6B7683">v1.4 &middot; 2026-08-10 &middot; 8 gates</span><span>ASTRO &rarr; ICC + HTF veto &rarr; STDV &rarr; OTE &rarr; MD &rarr; SWEEP + 1m FVG &rarr; RISK &rarr; DISCIPLINE</span><span style="color:#6B7683;margin-left:auto">expand &#9662;</span></summary>
+<ol style="margin:0;padding:4px 20px 14px 40px;color:#9AA7B4;font-size:13px;line-height:1.7">
+<li><b style="color:#E6EDF3">ASTRO</b> — day graded on FORECAST (Watch / Prepare / Execute) &middot; sizes expectation, never direction</li>
+<li><b style="color:#E6EDF3">ICC + HTF VETO</b> — bias from the 4H&rarr;1H&rarr;15m cascade, body-close indications &middot; <b style="color:#E8B04B">check the 4H map FIRST — never trade INTO your own A++ zone / HTF pocket / unswept draw</b></li>
+<li><b style="color:#E6EDF3">STDV</b> — leg off a key open (midnight &middot; 4H &middot; 18:00 &middot; Sunday) &middot; 5m wick/wick fib &middot; mark session highs &amp; lows (Tokyo &middot; London &middot; NY &middot; prior day) &middot; <b style="color:#E8B04B">rungs are targets to trade INTO, never entries at/past &minus;1</b> &middot; <b style="color:#E8B04B">an unmitigated FVG between entry and the rung = a scheduled dip &mdash; enter AT it, never above it</b> &middot; overnight: wait for the midnight leg &middot; never chase past &minus;4</li>
+<li><b style="color:#E6EDF3">OTE</b> — 3m marking: tick high &rarr; body of lowest wick &middot; pocket .705&ndash;.786 &middot; rolling anchor on the tap-and-dip &middot; fallback .5/.618/.66 only with a rejection level</li>
+<li><b style="color:#E6EDF3">MD</b> — 13 gates pass &middot; discretion layer confirmed IN the zone (displacement / LTF MSS) &middot; no SMT no expansion &middot; TP depth from the liquidity map</li>
+<li><b style="color:#E6EDF3">TRIGGER</b> — liquidity swept behind the entry &middot; fade the swept side &middot; enter on the 1m FVG snapback</li>
+<li><b style="color:#E6EDF3">RISK</b> — stop beyond the sweep zone, never mid-gap &middot; <b style="color:#E8B04B">the stop is sacred: moves only toward price, never widened, never cancelled</b> &middot; <b style="color:#E8B04B">never park a stop inside/just past an unmitigated FVG</b> &middot; partial at TP1 always, BE after</li>
+<li><b style="color:#E6EDF3">DISCIPLINE</b> — no chasing (original zone or better) &middot; <b style="color:#E8B04B">after a loss: size down or stand down, never up</b> &middot; <b style="color:#EF5350">2&ndash;3 failed trades in one day = LOCK THE ACCOUNT</b> &middot; one emotional action = session over &middot; let the market do its thing &mdash; no FOMO, no overleveraging, no taking off early (this gate blew the Aug 9 eval)</li>
+</ol>
+<p style="margin:0;padding:0 20px 12px;font:11px ui-monospace,Menlo,monospace;color:#6B7683">full registry: hub GUIDES &rarr; CHECKLIST &middot; full spec: Library/Business/Trading/CLAUDE/T1 &mdash; Trading Technique Spec.md (v1.4)</p>
+</details>
+<!-- /T1-CHECKLIST-STRIP -->
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">The Astro Almanac · Reference, Not Rules · Market-Only</div>
+  <h1>The Astro Almanac <span class="thin">— information, not prediction</span></h1>
+  <p class="sub">This guide teaches the <b>segments</b> — numerology, Chinese astrology, moon phases and eclipses, Western astrology, cycles — so every line on a day sheet means something to you. It deliberately never says what a day <i>will do</i>. <b>The hub reports; you observe; your pattern journal becomes the doctrine.</b> A 28 that shorts is not a broken rule — it's a data point in YOUR guide.</p>
+  <p class="src">SOURCES · the vault numerology &amp; astrology database (Library/UPH) · RunItUp day codes · Shem's astronumerics · Shem — "How To Use Eastern Astrology To Get Rich" (2026-08-06) · verified 2026 ephemeris · Chaldean number tradition</p>
+
+  <div class="corerule">
+    <div class="cr-line">the hub never says <span class="crk up">long</span> or <span class="crk dn">short</span> — it lays out the day's facts</div>
+    <div class="cr-line">the codes are <span class="crk v">reference labels</span>, not commands</div>
+    <div class="cr-line">the patterns are <b>yours</b> — logged, per asset, from observation</div>
+    <div class="cr-note">LEARN THE SEGMENTS → READ EACH DAY'S SHEET → LOG WHAT ACTUALLY HAPPENED → THAT JOURNAL IS THE REAL GUIDE</div>
+  </div>
+</header>
+
+<!-- ============ NUMEROLOGY ============ -->
+<section>
+  <div class="daytag">🔢 NUMEROLOGY</div>
+  <h2>The numbers and how to compute them</h2>
+  <p class="lede">Every date carries two numbers, and both are read <b>before and after reduction</b> — the raw compound number has its own meaning, and so does the reduced digit.</p>
+
+  <h4>How to calculate</h4>
+  <div class="card"><p>
+  <b>Life path of the day (full-date sum):</b> add every digit of month + day + full year. Example: Aug 5 2026 → 8+5+2+0+2+6 = <b>23</b> → 2+3 = <b>5</b>. The raw total (23) is the compound; the reduced value (5) is the life path.<br><br>
+  <b>Day number:</b> the calendar day kept whole first (the 20th is a 20 before it is a 2), then reduced. The compound day number carries its own meaning.<br><br>
+  <b>Masters are never reduced:</b> 11, 22, 33 stay as they are. <b>Hidden masters:</b> a raw total or day of 20 or 29 contains a hidden 11 (2+0, 2+9→11); <b>22 is a double 11</b>. Don't collapse masters prematurely — a component sum like 11+11+22 = 44 → 8 is "an 8 carrying triple master energy."</p></div>
+
+  <h4>The codes — reference labels (what the sources say they mean)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Code</th><th>Fires from</th><th>What the tradition says</th></tr>
+    <tr><td><b class="dn">7</b></td><td>day 7 / 16 / 25 · or life path 7</td><td>The <b>short code</b>: weakness, withdrawal, low energy. (Your own observation decides what it actually does per asset.)</td></tr>
+    <tr><td><b class="v">11</b></td><td>day 11 / 20 / 29 · raw total 11 or 20 · LP 11</td><td>The <b>volatility code</b>: extreme emotional energy that amplifies whatever is happening, either direction — "it exposes what's already weak."</td></tr>
+    <tr><td><b class="up">28</b></td><td>day 28 · or raw total 28</td><td>The <b>money code</b>: wealth energy. Note from your own logs: 28 days sometimes short — treat the label as a flag to watch, never a direction.</td></tr>
+    <tr><td><b class="v">22</b></td><td>day 22 · or LP 22</td><td><b>Master builder — a double 11.</b> Big-structure energy, elevated intensity.</td></tr>
+  </table></div>
+
+  <h4>Single numbers 1–9 + masters</h4>
+  <div class="tblwrap"><table>
+    <tr><th>#</th><th>Planet</th><th>Meaning</th></tr>
+    <tr><td><b>1</b></td><td>Sun</td><td>Beginnings, leadership, independence, raw drive. Universal-1 periods carry strength and fresh starts.</td></tr>
+    <tr><td><b>2</b></td><td>Moon</td><td>Partnership, patience, sensitivity, slow tides. Duality.</td></tr>
+    <tr><td><b>3</b></td><td>Jupiter</td><td>Expression, creativity, expansion, luck through visibility.</td></tr>
+    <tr><td><b>4</b></td><td>Rahu / Uranus</td><td>Structure, work, discipline, systems — and sudden shocks. The builder that earns everything.</td></tr>
+    <tr><td><b>5</b></td><td>Mercury</td><td>Speed, risk, change, communication, fast money. The most restless number.</td></tr>
+    <tr><td><b>6</b></td><td>Venus</td><td>Money, home, harmony, attraction, responsibility.</td></tr>
+    <tr><td><b>7</b></td><td>Ketu / Neptune</td><td>Analysis, solitude, spirituality, withdrawal from the material. Not a money number.</td></tr>
+    <tr><td><b>8</b></td><td>Saturn</td><td>Power, wealth, karma, discipline. Cuts both ways — rewards rules, punishes shortcuts.</td></tr>
+    <tr><td><b>9</b></td><td>Mars</td><td>Endings, completion, force, conflict. Universal-9 periods carry closure.</td></tr>
+    <tr><td><b>11</b></td><td>—</td><td>Master of illumination: high voltage, manifestation, emotional extremes. Panic and revelation live here.</td></tr>
+    <tr><td><b>22</b></td><td>—</td><td>Master builder: the 4's discipline at master scale. A double 11.</td></tr>
+    <tr><td><b>33</b></td><td>—</td><td>Master teacher: rare; service and expression at master scale.</td></tr>
+  </table></div>
+
+  <h4>Compound numbers (Chaldean tradition — read the raw total BEFORE reducing)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>#</th><th>Name / meaning</th></tr>
+    <tr><td><b>10</b></td><td>The wheel of fortune — rise and fall, sudden turns of fate.</td></tr>
+    <tr><td><b>13</b></td><td><b>Karmic</b> — power through rules and discipline; high payoff for those who follow the structure, upheaval for those who don't. "The matrix number."</td></tr>
+    <tr><td><b>14</b></td><td>Movement, media, risk, change — gains and losses through speed.</td></tr>
+    <tr><td><b>16</b></td><td><b>The shattered tower</b> — karmic; sudden collapse of what was built too proudly. A warning number.</td></tr>
+    <tr><td><b>17</b></td><td>The star — legacy, spiritual wealth, the name outlives the man.</td></tr>
+    <tr><td><b>19</b></td><td>The prince of heaven — karmic sun; success and honor after tests are passed.</td></tr>
+    <tr><td><b>20</b></td><td>The awakening — the call to a mission; <b>a hidden 11</b>.</td></tr>
+    <tr><td><b>21</b></td><td>The crown of the magi — victory after long struggle.</td></tr>
+    <tr><td><b>23</b></td><td><b>The royal star of the lion</b> — the luckiest compound: charisma, protection from above, success through others. A 23/5 is the 5's speed with royal luck on top.</td></tr>
+    <tr><td><b>25</b></td><td>Wisdom through experience — a 7 that earned it; observation, testing, learning by losses.</td></tr>
+    <tr><td><b>26</b></td><td>Partnership karma — gains and ruin through others; money warnings around trust.</td></tr>
+    <tr><td><b>28</b></td><td><b>The money code</b> — wealth energy, but classically "wealth that must be guarded/rebuilt" — trusting, loses through others, can rebuild.</td></tr>
+    <tr><td><b>29</b></td><td>Tests, trials, deception around trust — <b>a hidden 11</b> with the 11's emotional extremes.</td></tr>
+  </table></div>
+
+  <h4>Universal years and days</h4>
+  <div class="card"><p><b>Universal year</b> = the year's digits summed (2026 → 2+0+2+6 = 10 → <b>1</b>). The 1–9 meanings apply at year scale: <b>1 = beginnings/strength</b> (build years), 5 = change/risk years, 8 = power/harvest years, <b>9 = closure/endings</b>, and <b>2027 = 11 — a master voltage year</b>. <b>Universal day</b> = the full-date reduction (the day's life path) — the same 1–9 energies at day scale. August 2026 quirk: month 8 + year digits 10 ≡ +9, so every day's life path mirrors its day number all month.</p></div>
+</section>
+
+<!-- ============ CHINESE ============ -->
+<section>
+  <div class="daytag">🀄 CHINESE ASTROLOGY</div>
+  <h2>Pillars, elements, trines, clashes</h2>
+  <p class="lede">Chinese astrology runs on a 60-unit cycle: <b>10 heavenly stems</b> (5 elements × yin/yang) paired with <b>12 earthly branches</b> (the animals). Years, months, days, and hours each carry a pillar. <b>The day pillar is the core identity</b> — for a person or for a date.</p>
+
+  <h4>The five elements and their two cycles</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Cycle</th><th>Sequence</th><th>What it describes</th></tr>
+    <tr><td><b class="up">Generation (sheng)</b></td><td>Wood → Fire → Earth → Metal → Water → Wood</td><td>Each element feeds/produces the next. "X generates Y" = X is Y's resource.</td></tr>
+    <tr><td><b class="dn">Control (ke)</b></td><td>Wood → Earth → Water → Fire → Metal → Wood</td><td>Each element dominates one other. "X controls Y" = X restrains/exploits Y. In BaZi wealth theory, the element you control is your <b>wealth element</b>.</td></tr>
+  </table></div>
+
+  <h4>The four trines (harmony groups)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Trine</th><th>Animals</th><th>Archetype</th></tr>
+    <tr><td><b>Water</b></td><td>Rat · Dragon · Monkey</td><td>Visionary/leader — status, authority, adaptive influence.</td></tr>
+    <tr><td><b>Metal</b></td><td>Snake · Rooster · Ox</td><td>Builder — classically the wealth trine: assets, compounding, patience.</td></tr>
+    <tr><td><b>Fire</b></td><td>Dog · Tiger · Horse</td><td>Warrior — passion-manifestation, aggression, loyalty.</td></tr>
+    <tr><td><b>Wood</b></td><td>Rabbit · Pig · Goat</td><td>Diplomat/creative — information, networks, gentleness.</td></tr>
+  </table></div>
+
+  <h4>The six clashes (direct oppositions)</h4>
+  <div class="card"><p class="mono" style="font-family:var(--mono);font-size:14px"><b>Rat ↔ Horse</b> · <b>Ox ↔ Goat</b> · <b>Tiger ↔ Monkey</b> · <b>Rabbit ↔ Rooster</b> · <b>Dragon ↔ Dog</b> · <b>Snake ↔ Pig</b></p><p style="margin-top:8px">A clash between two pillars (a day's animal against a chart's animal, or the year's) is read as friction/disruption between them — traditionally the most destabilizing single relation. What that disruption *does* to a market is your pattern to find.</p></div>
+
+  <h4>How to read a day against a chart</h4>
+  <div class="rules">
+    <div class="rule"><b>1 — Elements:</b> take the day pillar's element and the chart's element; name the relation from the two cycles (same / generates / is generated by / controls / is controlled by). That's the energetic wiring for the day.</div>
+    <div class="rule"><b>2 — Animals:</b> check the day's branch against the chart's animal — same animal, same trine, clash, or nothing. Trine = harmony group; clash = the friction pair.</div>
+    <div class="rule"><b>3 — The year sits over everything:</b> 2026 is the Fire Horse — run the same two checks between the year and each chart once, and it colors the whole year.</div>
+    <div class="rule"><b>4 — Wealth element note:</b> the element a chart CONTROLS is its classical wealth element — days/years of that element are traditionally its "wealth activation" (e.g. Water controls Fire → a Water chart in a Fire year).</div>
+  </div>
+
+  <h4>The Day Master — a chart's economic identity (Shem)</h4>
+  <div class="card"><p>The day pillar's heavenly-stem element is the <b>Day Master</b> — in BaZi it's the core self, and Shem's wealth doctrine treats it as the chart's <b>native economic domain</b>: the arena where that chart holds natural leverage. For entities, the founding-date day pillar plays the same role. The traditional element → domain map:</p></div>
+  <div class="tblwrap"><table>
+    <tr><th>Day Master element</th><th>Native domains (per the tradition)</th></tr>
+    <tr><td><b>🔥 Fire</b></td><td>Technology, entertainment, performance — anything "on stage."</td></tr>
+    <tr><td><b>⛰ Earth</b></td><td>Real estate, agriculture, conveyances, hospitality.</td></tr>
+    <tr><td><b>🌳 Wood</b></td><td>Construction, agriculture, finance.</td></tr>
+    <tr><td><b>⚙️ Metal</b></td><td>Finance, automobiles, import/export, engineering, science, innovation.</td></tr>
+    <tr><td><b>🌊 Water</b></td><td><b>Markets, trading, speculation, betting — extreme risk.</b> The trader's element.</td></tr>
+  </table></div>
+  <div class="card"><p><b>Why it's on this page:</b> an asset or company whose day pillar sits in its native domain is, by this doctrine, operating "at home" (OIL — a Water Pig running a speculative commodity market — is the stable's cleanest example). Shem's own arc is the anecdote: a Yin Metal Day Master who entered crypto/finance in <b>2020 — a Metal year — before he ever knew his chart</b>. Whether at-home charts actually outperform: journal question, as always.</p></div>
+
+  <h4>Enemy years — the protective read (Shem)</h4>
+  <div class="card"><p>An <b>enemy year</b> is a year whose animal clashes a chart's pillar or whose element attacks the chart's element — and Shem's key refinement is that it runs on <b>two levels</b>: the <b>year-pillar enemy</b> (year animal clashes the chart's year animal) and the <b>day-pillar enemy</b> (year animal clashes the Day Master's animal). His own sequence: 2024 was his year-pillar enemy, 2025 his day-pillar enemy — he slowed down, avoided high-risk moves, and "evaded situations others couldn't foresee." The doctrine is defensive: <b>knowing when NOT to act is half the system.</b> For the stable: check each asset's clash animal against the current year (2026 Fire Horse = BTC's and SOL's clash year — both flagged on the year callout below), and expect the friction read to apply to the WHOLE year, not one day.</p></div>
+
+  <h4>Elemental wealth cycles — when money is easy, when it's war</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Year's element vs the Day Master</th><th>Cycle name</th><th>Traditional read</th></tr>
+    <tr><td>Element the DM <b>controls</b></td><td><b class="up">Wealth years</b></td><td>Easy money — "metal cuts through wood very easily" (a Metal DM in Wood years). The classical wealth activation at year scale.</td></tr>
+    <tr><td>Element that <b>controls the DM</b></td><td><b class="dn">Pressure years</b></td><td>Stress and financial grind — fire melts metal. Shem calls these the years to defend, not attack.</td></tr>
+    <tr><td>The DM's <b>own element</b></td><td><b class="v">Home years</b></td><td>Natural leverage; the chart "finds its field" (Shem entering crypto in Metal 2020).</td></tr>
+    <tr><td>Element that <b>generates the DM</b></td><td>Resource years</td><td>Support and fuel — favorable, quieter than wealth years.</td></tr>
+    <tr><td>Element the <b>DM generates</b></td><td>Output years</td><td>Productive but draining — energy flows out of the chart.</td></tr>
+  </table></div>
+  <div class="card"><p>This is the engine behind "everybody has a few years where everything works, then a couple where nothing does" — the year element rotates through these five relations against any fixed chart. Applied to the stable it's mechanical: name the relation between the year's element and each asset's element, label the year (wealth / pressure / home / resource / output), and let the journal score whether the label earned its name.</p></div>
+
+  <h4>Entity charts — companies, teams, nations (the external application)</h4>
+  <div class="card"><p>Everything above applies to <b>anything with a birth date</b>. Shem's practice: take a company's founding date (his examples: Nvidia, Google), a team's origin, or a player's birth date → derive the element identity → cross-reference against the current year's (and day's) element → position on the resulting read. His claim: <b>"98% of the time that's going to work"</b> — reported here as his claim, not a promise. Extensions he names: sports betting (bettors using Chinese astrology + Jyamitra timing "have been kicked off so many sport betting apps"), <b>Polymarket-style political markets</b> (which leader/country is in an enemy year or element), and geopolitical calls. When birth time is unknown, a <b>BaZi/Bosi calculator</b> with birth location can approximate the day pillar. This is exactly the machinery behind the vault's <code style="font-family:var(--mono);font-size:12.5px">astro research</code> skill and the asset stable itself — the entity chart IS the market-only doctrine.</p></div>
+</section>
+
+<!-- ============ EASTERN DOMINANCE ============ -->
+<section>
+  <div class="daytag">🌏 EASTERN VS WESTERN — THE DOMINANCE THESIS</div>
+  <h2>Why the Eastern layer leads the sheet</h2>
+  <p class="lede">Shem's sharpest claim, and the reason the Chinese layer carries the most weight in this almanac: <b>for real-world timing — markets, sports, geopolitics — Eastern systems (Chinese + Sidereal) outperform Western/tropical astrology</b>, because they run on the actual sky and on element mechanics precise enough to act on.</p>
+
+  <div class="corerule">
+    <div class="cr-line">CHINESE + SIDEREAL = the <span class="crk v">timing engines</span> · tropical Western = a <span class="crk v">reference layer</span></div>
+    <div class="cr-line">sidereal reads the <span class="crk up">actual constellations</span> · tropical has drifted <span class="crk dn">~24° off the real sky</span> (precession)</div>
+    <div class="cr-note">SHEM: "YOU HAVE TO USE EASTERN TO UNDERSTAND WHY THINGS ARE HAPPENING" · THE ELITE-USAGE CLAIM IS HIS, LOGGED AS A CLAIM</div>
+  </div>
+
+  <div class="card"><p><b>The precision argument.</b> The tropical zodiac fixes Aries to the March equinox; precession of the equinoxes means the signs no longer sit on their constellations — the sky and the calendar have drifted roughly a full sign apart over ~2,000 years. Sidereal (Vedic/Jyotish) astrology corrects for this and reads planets against the <b>actual stars</b>, which is why Shem calls Western data "not accurate information" for prediction work. His sociological claim on top: elites time their moves with Eastern systems while popular culture is fed tropical horoscopes — "using eastern timing while selling you the western astrology stuff." Take the epistemics as his; the practical instruction is clean either way: <b>weight the Chinese layer first, sidereal second, tropical as context.</b></p></div>
+
+  <h4>The sidereal wealth map (Lagna · D10 · houses 2, 10, 11)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Piece</th><th>What it governs (per Shem)</th></tr>
+    <tr><td><b>Lagna (rising sign)</b></td><td>The chart governor — shapes how the whole chart is read. Needs birth time + location, not just the date.</td></tr>
+    <tr><td><b>D10 / D11 charts</b></td><td>Divisional charts: D10 = career and professional reality · D11 = gains and profits.</td></tr>
+    <tr><td><b>2nd house</b></td><td>Accumulated wealth — the "easy money" path of least resistance. No planet there? Read the <b>ruler of the sign</b> in the house and find where it sits.</td></tr>
+    <tr><td><b>10th house</b></td><td>Career, reputation, how the chart should move through public reality.</td></tr>
+    <tr><td><b>11th house</b></td><td>Networks and profits — the sign here names the <b>personality archetype of the people who make the chart rich</b>.</td></tr>
+  </table></div>
+  <div class="card"><p><b>Standing guard:</b> the houses are a <b>personal-strategy layer</b> — life navigation, career, network. The market-only law is untouched: personal chart data never becomes a trade input. Where this layer CAN reach the desk is entity charts — a company with a known founding date, time, and place has a Lagna and houses like anyone else, and sidereal transits over an entity chart are exactly the kind of hypothesis the journal exists to test.</p></div>
+</section>
+
+<!-- ============ MOON ============ -->
+<section>
+  <div class="daytag">🌙 MOON &amp; ECLIPSES</div>
+  <h2>The lunar cycle, plainly</h2>
+  <p class="lede">One cycle ≈ 29.5 days, new moon to new moon. The sheet always shows the phase, illumination %, and waxing/waning — here's what the words mean.</p>
+
+  <div class="tblwrap"><table>
+    <tr><th>Phase</th><th>What it is</th><th>Traditional reading</th></tr>
+    <tr><td><b>🌑 New moon</b></td><td>Moon between Earth and Sun — dark sky</td><td>Beginnings, planting, initiations. Shem's market claim: rises tend to begin here.</td></tr>
+    <tr><td><b>🌒–🌔 Waxing</b></td><td>Illumination growing toward full</td><td>Building, accumulation, growth energy.</td></tr>
+    <tr><td><b>🌕 Full moon</b></td><td>Earth between Sun and Moon — fully lit</td><td>Culmination, harvest, emotional peak. Traditional claim: reversals and drops cluster near it. Subconscious wide open.</td></tr>
+    <tr><td><b>🌖–🌘 Waning</b></td><td>Illumination shrinking toward new</td><td>Release, completion, defense, clearing.</td></tr>
+  </table></div>
+
+  <h4>Eclipses — what they actually are</h4>
+  <div class="card"><p><b>Solar eclipse</b> = a new moon exact enough that the Moon covers the Sun. <b>Lunar eclipse</b> = a full moon exact enough that Earth's shadow covers the Moon. Astrologically they're read as <b>supercharged versions of their phase</b> — sudden, fated turning windows, traditionally volatile and "not normal days." They come in pairs (a solar and lunar within ~2 weeks). Whether an eclipse means reversal, acceleration, or nothing for a given asset — that's exactly the kind of pattern your journal exists to catch.</p></div>
+
+  <h4>Verified 2026 windows (real ephemeris, researched 2026-08-02)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Event</th><th>Dates</th></tr>
+    <tr><td><b>Solar eclipses</b> (new moons)</td><td><b>Feb 17</b> · <b>Aug 12</b></td></tr>
+    <tr><td><b>Lunar eclipses</b> (full moons)</td><td><b>Mar 3</b> · <b>Aug 28</b></td></tr>
+    <tr><td>Clean new moons (rest of 2026)</td><td>Sep 10 · Oct 10 · Nov 9 · Dec 8</td></tr>
+    <tr><td><b>Mercury retrograde 2026</b></td><td>Feb 26 – Mar 20 · Jun 29 – Jul 23 · Oct 24 – Nov 13</td></tr>
+    <tr><td>Mercury retrograde 2027</td><td>Feb 9 – Mar 3 · Jun 10 – Jul 4 · Oct 7 – Oct 28</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ WESTERN ============ -->
+<section>
+  <div class="daytag">🪐 WESTERN ASTROLOGY</div>
+  <h2>Seasons, dignities, retrogrades — decoded</h2>
+  <p class="lede">The Western layer on the sheet is three facts: the zodiac season, each asset's ruling planet's <b>dignity</b> in that season, and Mercury's motion. Here's what each one is.</p>
+
+  <h4>The zodiac seasons (Sun sign dates)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Season</th><th>Dates</th><th>Ruler</th><th>Season</th><th>Dates</th><th>Ruler</th></tr>
+    <tr><td>Aries</td><td>Mar 21 – Apr 19</td><td>Mars</td><td>Libra</td><td>Sep 23 – Oct 22</td><td>Venus</td></tr>
+    <tr><td>Taurus</td><td>Apr 20 – May 20</td><td>Venus</td><td>Scorpio</td><td>Oct 23 – Nov 21</td><td>Mars/Pluto</td></tr>
+    <tr><td>Gemini</td><td>May 21 – Jun 20</td><td>Mercury</td><td>Sagittarius</td><td>Nov 22 – Dec 21</td><td>Jupiter</td></tr>
+    <tr><td>Cancer</td><td>Jun 21 – Jul 22</td><td>Moon</td><td>Capricorn</td><td>Dec 22 – Jan 19</td><td>Saturn</td></tr>
+    <tr><td>Leo</td><td>Jul 23 – Aug 22</td><td>Sun</td><td>Aquarius</td><td>Jan 20 – Feb 18</td><td>Saturn/Uranus</td></tr>
+    <tr><td>Virgo</td><td>Aug 23 – Sep 22</td><td>Mercury</td><td>Pisces</td><td>Feb 19 – Mar 20</td><td>Jupiter/Neptune</td></tr>
+  </table></div>
+
+  <h4>Essential dignities — what "domicile" and "detriment" mean</h4>
+  <div class="tblwrap"><table>
+    <tr><th>State</th><th>Meaning</th></tr>
+    <tr><td><b class="up">Domicile</b></td><td>The planet is in a sign it RULES — at home, operating at full strength (Sun in Leo, Saturn in Capricorn).</td></tr>
+    <tr><td><b class="up">Exalted</b></td><td>A guest of honor — elevated, sometimes exaggerated strength (Sun in Aries, Saturn in Libra).</td></tr>
+    <tr><td><b class="dn">Detriment</b></td><td>The sign OPPOSITE its home — working against its nature (Saturn in Leo, Sun in Aquarius).</td></tr>
+    <tr><td><b class="dn">Fall</b></td><td>Opposite its exaltation — traditionally its weakest placement (Sun in Libra, Saturn in Aries).</td></tr>
+  </table></div>
+  <div class="card"><p>The sheet applies this to each asset's <b>ruling planet</b> (NQ→Uranus, GOLD→Sun, BTC→Saturn, SOL→Neptune, OIL→Pluto) in the current season, stated as the traditional fact — e.g. "Sun: domicile in Leo." Whether a dignified ruler actually correlates with anything for that asset is a pattern question, not a promise.</p></div>
+
+  <h4>Mercury retrograde — what it IS</h4>
+  <div class="card"><p>Three or four times a year, Mercury <b>appears</b> to move backward against the stars for ~3 weeks (an optical effect of orbital speeds — nothing physically reverses). Traditional reading: communication, technology, contracts, and travel get glitchy — misreads, fakeouts, do-overs. The trading-lore version: fakeouts and fat-fingers increase. It's the most famous — and most disputed — cycle in popular astrology, which makes it a perfect candidate for your own logs.</p></div>
+
+  <h4>Planetary days &amp; hours (Chaldean order)</h4>
+  <div class="tblwrap"><table>
+    <tr><th>Day</th><th>Ruler</th><th>Traditional flavor</th></tr>
+    <tr><td>Sunday</td><td>Sun</td><td>vitality, gold, visibility</td></tr>
+    <tr><td>Monday</td><td>Moon</td><td>emotion, tides, the public</td></tr>
+    <tr><td>Tuesday</td><td>Mars</td><td>aggression, conflict, energy spikes</td></tr>
+    <tr><td>Wednesday</td><td>Mercury</td><td>communication, speed, commerce</td></tr>
+    <tr><td>Thursday</td><td>Jupiter</td><td>expansion, trend, optimism</td></tr>
+    <tr><td>Friday</td><td>Venus</td><td>money, harmony, harvest</td></tr>
+    <tr><td>Saturday</td><td>Saturn</td><td>discipline, restriction, structure</td></tr>
+  </table></div>
+
+  <h4>Vedic layer — gap note, partially filled</h4>
+  <div class="card"><p>The sidereal wealth map (Lagna, D10/D11, houses 2·10·11) now lives in the <b>Eastern vs Western</b> section above — the first market-adjacent Vedic doctrine on this page (2026-08-06, Shem). Still unsourced: nakshatras, tithis, and dasha periods applied to entity charts. The sheet's planetary day/hour ruler remains the only Vedic layer actually wired into the hub. As the journal wants more granularity, source it (Shem's Universe, AstroSeek) and this section keeps growing.</p></div>
+</section>
+
+<!-- ============ THE ASSET STABLE ============ -->
+<section>
+  <div class="daytag">🐎 THE ASSET STABLE — REFERENCE CARD</div>
+  <h2>The five charts, pure facts</h2>
+  <div class="tblwrap"><table>
+    <tr><th>Asset</th><th>Birth</th><th>Numbers (raw · reduced)</th><th>Western</th><th>Chinese</th></tr>
+    <tr><td><b>📈 NQ</b></td><td>Feb 8 1971 · first trading day</td><td>day <b>8</b> · LP <b>28 → 1</b></td><td>Aquarius · ruler Uranus</td><td><b>Metal Pig</b> · Wood trine · clash Snake · controls Wood</td></tr>
+    <tr><td><b>🥇 GOLD</b></td><td>Dec 31 1974 · COMEX futures</td><td>day <b>31 → 4</b> · LP <b>28 → 1</b></td><td>Capricorn-born · ruler Sun (Leo domicile)</td><td><b>Wood Tiger</b> · Fire trine · clash Monkey · intrinsic Metal</td></tr>
+    <tr><td><b>₿ BTC</b></td><td>Jan 3 2009 · genesis block</td><td>day <b>3</b> · LP <b>15 → 6</b></td><td>Capricorn · ruler Saturn</td><td><b>Earth Rat</b> · Water trine · clash Horse</td></tr>
+    <tr><td><b>◎ SOL</b></td><td>Mar 16 2020 · mainnet genesis</td><td>day <b>16 → 7</b> · LP <b>14 → 5</b></td><td>Pisces · ruler Neptune</td><td><b>Metal Rat</b> · Water trine · clash Horse</td></tr>
+    <tr><td><b>🛢 OIL</b></td><td>Mar 30 1983 · WTI futures</td><td>day <b>3</b> · LP <b>27 → 9</b></td><td>Aries-born · ruler Pluto</td><td><b>Water Pig</b> · Wood trine · clash Snake · controls Fire</td></tr>
+  </table></div>
+  <div class="callout"><span class="emj">🗓</span><b>2026 (Fire Horse) facts against the stable:</b> Horse = BTC's and SOL's clash animal (<b>their enemy year</b>, in Shem's vocabulary) · Horse shares GOLD's Fire trine (Tiger) · Fire (year) controls Metal (NQ's and SOL's year element) — a <b>pressure year</b> for the Metal charts · Water (OIL) controls Fire — the year is OIL's classical <b>wealth year</b> · Fire (year) generates Earth (BTC) — a resource relation under the clash. What any of that did to price — check your journal, not this page.</div>
+</section>
+
+<!-- ============ YOUR GUIDE ============ -->
+<section>
+  <div class="daytag">📓 YOUR GUIDE — THE PATTERN JOURNAL</div>
+  <h2>The almanac is the dictionary. The journal is the doctrine.</h2>
+  <div class="rules">
+    <div class="rule"><b>Log the sheet, then the outcome.</b> Date → the day's facts (codes, pillar, moon, dignities) → what each asset actually did. Nothing else required.</div>
+    <div class="rule"><b>Per asset, always.</b> The same day can treat NQ and gold completely differently — patterns are asset-specific by default.</div>
+    <div class="rule"><b>Let the sample size speak.</b> One eclipse proves nothing; ten eclipses on one asset is a pattern. Until then, every label on this page is a hypothesis.</div>
+    <div class="rule"><b>Contradictions are the product.</b> "28 = money code but it shorted" isn't noise — it's exactly the observation that builds a guide nobody else has.</div>
+  </div>
+  <div class="callout"><span class="emj">⚓</span><b>The standing laws that survive this pivot:</b> market-only (your personal numbers are never inputs) · astro never picks entries, stops, or targets — ICC structure does · and the sheet's accuracy is sacred: verified ephemeris, exact arithmetic, masters kept, compounds read raw. Information you can trust, conclusions you own.</div>
+</section>
+
+<footer>THE ASTRO ALMANAC · reference, not rules · the sheet reports — you draw the patterns · Ethan's second brain</footer>
+</div>
+</body>
+</html>

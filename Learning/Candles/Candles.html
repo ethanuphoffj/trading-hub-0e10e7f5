@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candlesticks — The Language of the Market</title>
+<style>
+  :root{
+    --bg:#0C0F13; --surface:#12161C; --raised:#1A202A; --line:#242C37;
+    --ink:#E6EDF3; --ink2:#9AA7B4; --ink3:#6B7683;
+    --up:#26A379; --dn:#EF5350; --gold:#BC8329; --goldtxt:#E8B04B; --blue:#5B8DEF;
+    --blue-dim:rgba(91,141,239,.14);
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:48px 24px 80px}
+  a{color:var(--blue)}
+
+  header{margin-bottom:40px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--goldtxt);margin-bottom:10px}
+  h1{font-size:38px;line-height:1.15;letter-spacing:-.02em;font-weight:750}
+  h1 .thin{color:var(--ink2);font-weight:400}
+  .sub{color:var(--ink2);margin-top:12px;max-width:780px}
+  .sub b{color:var(--ink)}
+  .src{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-top:14px}
+
+  .pipeline{display:flex;align-items:stretch;gap:10px;margin:30px 0 8px;flex-wrap:wrap}
+  .stage{flex:1 1 200px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .stage .n{font-family:var(--mono);font-size:11px;color:var(--goldtxt);letter-spacing:.12em}
+  .stage h3{font-size:18px;margin:4px 0 4px}
+  .stage p{font-size:13.5px;color:var(--ink2);line-height:1.5}
+  .arrow{align-self:center;color:var(--ink3);font-size:20px;padding:0 2px}
+
+  section{margin-top:64px}
+  .daytag{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--goldtxt);border:1px solid rgba(188,131,41,.45);border-radius:999px;padding:5px 14px;margin-bottom:14px}
+  h2{font-size:28px;letter-spacing:-.01em;margin-bottom:6px}
+  .lede{color:var(--ink2);max-width:780px;margin-bottom:22px}
+  .lede b{color:var(--ink)}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:840px){.grid3{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.grid3{grid-template-columns:1fr}}
+  .card h4{font-size:15px;margin-bottom:2px}
+  .card .tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+  .tag.up{color:var(--up)} .tag.dn{color:var(--dn)} .tag.mut{color:var(--ink3)} .tag.gold{color:var(--goldtxt)}
+  .card p{font-size:13.5px;color:var(--ink2);margin-top:8px}
+  .card p b{color:var(--ink)}
+  svg{display:block;width:100%;height:auto;margin-top:10px}
+  svg text{font-family:var(--mono)}
+
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  @media(max-width:720px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--ink2)}
+  .rule b{color:var(--ink)}
+
+  .callout{background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:18px;font-size:14.5px;color:var(--ink2)}
+  .callout b{color:var(--ink)}
+  .callout .emj{margin-right:8px}
+
+  .corerule{background:var(--raised);border:1px solid rgba(188,131,41,.5);border-radius:14px;padding:22px 24px;text-align:center;margin-bottom:18px}
+  .cr-line{font-family:var(--mono);font-size:16.5px;color:var(--ink);margin:3px 0}
+  @media(max-width:720px){.cr-line{font-size:13.5px}}
+  .crk{font-weight:700}
+  .crk.up{color:var(--up)} .crk.dn{color:var(--dn)} .crk.v{color:var(--goldtxt)}
+  .cr-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink3);margin-top:10px}
+
+  .step{display:flex;gap:18px;margin-top:34px}
+  .stepnum{flex:0 0 34px;height:34px;border-radius:999px;background:var(--raised);border:1px solid var(--gold);color:var(--goldtxt);font-family:var(--mono);font-weight:700;display:flex;align-items:center;justify-content:center}
+  .stepbody{flex:1;min-width:0}
+  .stepbody h3{font-size:19px;margin-bottom:4px}
+  .stepbody p{color:var(--ink2);font-size:14.5px;max-width:820px}
+  .stepbody p b{color:var(--ink)}
+  footer{margin-top:70px;border-top:1px solid var(--line);padding-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<!-- T1-CHECKLIST-STRIP v1.4 · synced with Learning/Checklist/Checklist.html — update every strip + the registry on each T1 rev -->
+<details style="max-width:1060px;margin:14px auto 0;padding:0;background:#12161C;border:1px solid rgba(188,131,41,.45);border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+<summary style="cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 16px;font:12px ui-monospace,'SF Mono',Menlo,monospace;color:#9AA7B4"><b style="color:#E8B04B;letter-spacing:.12em">&#9889; T1 CHECKLIST</b><span style="color:#6B7683">v1.4 &middot; 2026-08-10 &middot; 8 gates</span><span>ASTRO &rarr; ICC + HTF veto &rarr; STDV &rarr; OTE &rarr; MD &rarr; SWEEP + 1m FVG &rarr; RISK &rarr; DISCIPLINE</span><span style="color:#6B7683;margin-left:auto">expand &#9662;</span></summary>
+<ol style="margin:0;padding:4px 20px 14px 40px;color:#9AA7B4;font-size:13px;line-height:1.7">
+<li><b style="color:#E6EDF3">ASTRO</b> — day graded on FORECAST (Watch / Prepare / Execute) &middot; sizes expectation, never direction</li>
+<li><b style="color:#E6EDF3">ICC + HTF VETO</b> — bias from the 4H&rarr;1H&rarr;15m cascade, body-close indications &middot; <b style="color:#E8B04B">check the 4H map FIRST — never trade INTO your own A++ zone / HTF pocket / unswept draw</b></li>
+<li><b style="color:#E6EDF3">STDV</b> — leg off a key open (midnight &middot; 4H &middot; 18:00 &middot; Sunday) &middot; 5m wick/wick fib &middot; mark session highs &amp; lows (Tokyo &middot; London &middot; NY &middot; prior day) &middot; <b style="color:#E8B04B">rungs are targets to trade INTO, never entries at/past &minus;1</b> &middot; <b style="color:#E8B04B">an unmitigated FVG between entry and the rung = a scheduled dip &mdash; enter AT it, never above it</b> &middot; overnight: wait for the midnight leg &middot; never chase past &minus;4</li>
+<li><b style="color:#E6EDF3">OTE</b> — 3m marking: tick high &rarr; body of lowest wick &middot; pocket .705&ndash;.786 &middot; rolling anchor on the tap-and-dip &middot; fallback .5/.618/.66 only with a rejection level</li>
+<li><b style="color:#E6EDF3">MD</b> — 13 gates pass &middot; discretion layer confirmed IN the zone (displacement / LTF MSS) &middot; no SMT no expansion &middot; TP depth from the liquidity map</li>
+<li><b style="color:#E6EDF3">TRIGGER</b> — liquidity swept behind the entry &middot; fade the swept side &middot; enter on the 1m FVG snapback</li>
+<li><b style="color:#E6EDF3">RISK</b> — stop beyond the sweep zone, never mid-gap &middot; <b style="color:#E8B04B">the stop is sacred: moves only toward price, never widened, never cancelled</b> &middot; <b style="color:#E8B04B">never park a stop inside/just past an unmitigated FVG</b> &middot; partial at TP1 always, BE after</li>
+<li><b style="color:#E6EDF3">DISCIPLINE</b> — no chasing (original zone or better) &middot; <b style="color:#E8B04B">after a loss: size down or stand down, never up</b> &middot; <b style="color:#EF5350">2&ndash;3 failed trades in one day = LOCK THE ACCOUNT</b> &middot; one emotional action = session over &middot; let the market do its thing &mdash; no FOMO, no overleveraging, no taking off early (this gate blew the Aug 9 eval)</li>
+</ol>
+<p style="margin:0;padding:0 20px 12px;font:11px ui-monospace,Menlo,monospace;color:#6B7683">full registry: hub GUIDES &rarr; CHECKLIST &middot; full spec: Library/Business/Trading/CLAUDE/T1 &mdash; Trading Technique Spec.md (v1.4)</p>
+</details>
+<!-- /T1-CHECKLIST-STRIP -->
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">The Candlestick Trading Bible · Homma Lineage · Price Action</div>
+  <h1>CANDLESTICKS <span class="thin">— the language of the market</span></h1>
+  <p class="sub">Every candle is a sentence about who fought and who won that session. Patterns repeat because <b>human behavior under fear, greed, and hope is patterned</b>. The whole 168-page system reduces to one skeleton — the same one ICC runs on: find the trend, find the level, wait for the signal AT the level, then let money management carry the edge.</p>
+  <p class="src">SOURCE · The Candlestick Trading Bible (full analysis in the vault) · founded by Munehisa Homma, 1700s rice trader · Westernized by Nison, 1989</p>
+
+  <div class="pipeline">
+    <div class="stage">
+      <div class="n">STEP 1</div>
+      <h3>Trend</h3>
+      <p>Diagnose the regime on 4H/daily: trending (HH/HL or LH/LL), ranging (definable box), or choppy (<b>close the chart</b>).</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="stage">
+      <div class="n">STEP 2</div>
+      <h3>Level</h3>
+      <p>S/R swings, supply &amp; demand, 8/21 MA, 50–61.8% fib, trendline. <b>No pattern means anything away from a level.</b></p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="stage">
+      <div class="n">STEP 3</div>
+      <h3>Signal</h3>
+      <p>A candlestick pattern AT the level, in line with the trend — the trigger. Then: stop beyond invalidation, <b>≥2:1 R:R</b> or skip.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ANATOMY ============ -->
+<section>
+  <div class="daytag">ANATOMY</div>
+  <h2>Reading one candle</h2>
+  <p class="lede">A candle = open · high · low · close. <b>Color is irrelevant — the relative position of open and close is everything.</b> Long body = strong pressure. Small body = little conviction. Long shadow = a battle fought far from the close, and lost.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 260" role="img" aria-label="Labeled candlestick anatomy: bull candle with body and shadows, plus the two shadow-rejection reads">
+      <line x1="120" y1="30" x2="120" y2="230" stroke="var(--ink3)" stroke-width="2"/>
+      <rect x="96" y="80" width="48" height="110" rx="3" fill="var(--up)"/>
+      <text x="170" y="38" font-size="12" fill="var(--ink2)">high — top of upper shadow</text>
+      <text x="170" y="86" font-size="12" fill="var(--ink2)">close (bull: close above open)</text>
+      <text x="170" y="140" font-size="12.5" fill="var(--ink)" font-weight="700">REAL BODY = the session's verdict</text>
+      <text x="170" y="192" font-size="12" fill="var(--ink2)">open</text>
+      <text x="170" y="234" font-size="12" fill="var(--ink2)">low — bottom of lower shadow</text>
+
+      <line x1="480" y1="40" x2="480" y2="170" stroke="var(--ink3)" stroke-width="2"/>
+      <rect x="462" y="130" width="36" height="40" rx="3" fill="var(--dn)"/>
+      <text x="430" y="200" font-size="11" fill="var(--ink2)">long UPPER shadow:</text>
+      <text x="430" y="216" font-size="11" fill="var(--ink2)">buyers bid it up — rejected</text>
+
+      <line x1="610" y1="70" x2="610" y2="200" stroke="var(--ink3)" stroke-width="2"/>
+      <rect x="592" y="70" width="36" height="40" rx="3" fill="var(--up)"/>
+      <text x="560" y="230" font-size="11" fill="var(--ink2)">long LOWER shadow:</text>
+      <text x="560" y="246" font-size="11" fill="var(--ink2)">sellers drove it down — rescued</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ THREE EVENTS ============ -->
+<section>
+  <div class="daytag">THE THREE EVENTS</div>
+  <h2>Every pattern is one of three things</h2>
+
+  <div class="corerule">
+    <div class="cr-line"><span class="crk up">REJECTION</span> — one side pushed to an extreme and was thrown back → trade against the rejected side</div>
+    <div class="cr-line"><span class="crk dn">CAPITULATION</span> — one side fully consumed the other → trade with the consuming side</div>
+    <div class="cr-line"><span class="crk v">INDECISION</span> — nobody won, the market is coiling → the NEXT candle decides, not this one</div>
+    <div class="cr-note">REJECTION: PIN BARS · DOJIS · TWEEZERS — CAPITULATION: ENGULFING · STARS — INDECISION: DOJI · INSIDE BAR</div>
+  </div>
+</section>
+
+<!-- ============ THE PATTERNS ============ -->
+<section>
+  <div class="daytag">THE PATTERNS</div>
+  <h2>The ten that matter</h2>
+  <p class="lede">Psychology first, names second — <b>if you know why the candle formed, you know what happens next.</b> Every read below assumes the pattern printed AT a key level; away from a level, ignore them all.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <h4>Hammer (bullish pin bar)</h4>
+      <div class="tag up">REJECTION · BULLISH</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Hammer candle with long lower tail at a support line">
+        <line x1="10" y1="112" x2="210" y2="112" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="6 5"/>
+        <line x1="50" y1="20" x2="50" y2="60" stroke="var(--ink3)" stroke-width="2"/><rect x="42" y="20" width="16" height="26" fill="var(--dn)"/>
+        <line x1="85" y1="45" x2="85" y2="88" stroke="var(--ink3)" stroke-width="2"/><rect x="77" y="45" width="16" height="28" fill="var(--dn)"/>
+        <line x1="122" y1="60" x2="122" y2="110" stroke="var(--ink3)" stroke-width="2"/><rect x="114" y="60" width="16" height="14" fill="var(--up)"/>
+        <line x1="160" y1="30" x2="160" y2="72" stroke="var(--ink3)" stroke-width="2"/><rect x="152" y="34" width="16" height="30" fill="var(--up)"/>
+        <text x="35" y="132" font-size="10" fill="var(--goldtxt)">tail ≥ 2× body · at support</text>
+      </svg>
+      <p>Sellers pushed after the open, buyers overwhelmed them, close back at the top. <b>At support / MA / fib after a decline = reversal long.</b></p>
+    </div>
+
+    <div class="card">
+      <h4>Shooting star (bearish pin bar)</h4>
+      <div class="tag dn">REJECTION · BEARISH</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Shooting star candle with long upper tail at a resistance line">
+        <line x1="10" y1="30" x2="210" y2="30" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="6 5"/>
+        <line x1="50" y1="78" x2="50" y2="118" stroke="var(--ink3)" stroke-width="2"/><rect x="42" y="86" width="16" height="26" fill="var(--up)"/>
+        <line x1="85" y1="52" x2="85" y2="96" stroke="var(--ink3)" stroke-width="2"/><rect x="77" y="60" width="16" height="28" fill="var(--up)"/>
+        <line x1="122" y1="32" x2="122" y2="82" stroke="var(--ink3)" stroke-width="2"/><rect x="114" y="68" width="16" height="14" fill="var(--dn)"/>
+        <line x1="160" y1="70" x2="160" y2="112" stroke="var(--ink3)" stroke-width="2"/><rect x="152" y="76" width="16" height="30" fill="var(--dn)"/>
+        <text x="22" y="132" font-size="10" fill="var(--goldtxt)">at resistance · top-tier signal</text>
+      </svg>
+      <p>Buyers pushed, sellers erased it. <b>At resistance in an uptrend = reversal short</b> — one of the book's highest-probability signals.</p>
+    </div>
+
+    <div class="card">
+      <h4>Bullish engulfing</h4>
+      <div class="tag up">CAPITULATION · BULLISH</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Small bear candle fully engulfed by a large bull candle">
+        <line x1="45" y1="30" x2="45" y2="70" stroke="var(--ink3)" stroke-width="2"/><rect x="37" y="34" width="16" height="28" fill="var(--dn)"/>
+        <line x1="80" y1="48" x2="80" y2="92" stroke="var(--ink3)" stroke-width="2"/><rect x="72" y="52" width="16" height="30" fill="var(--dn)"/>
+        <line x1="115" y1="60" x2="115" y2="100" stroke="var(--ink3)" stroke-width="2"/><rect x="107" y="66" width="16" height="24" fill="var(--dn)"/>
+        <line x1="155" y1="40" x2="155" y2="112" stroke="var(--ink3)" stroke-width="2"/><rect x="145" y="48" width="20" height="56" fill="var(--up)"/>
+        <text x="10" y="130" font-size="10" fill="var(--goldtxt)">2nd body swallows the 1st entirely</text>
+      </svg>
+      <p>Selling power fully consumed. <b>At the end of a downtrend = capitulation bottom</b>; mid-uptrend = continuation. Nison: needs a definable trend + full engulfment.</p>
+    </div>
+
+    <div class="card">
+      <h4>Bearish engulfing</h4>
+      <div class="tag dn">CAPITULATION · BEARISH</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Small bull candle fully engulfed by a large bear candle at the top of an uptrend">
+        <line x1="45" y1="70" x2="45" y2="110" stroke="var(--ink3)" stroke-width="2"/><rect x="37" y="78" width="16" height="28" fill="var(--up)"/>
+        <line x1="80" y1="48" x2="80" y2="92" stroke="var(--ink3)" stroke-width="2"/><rect x="72" y="56" width="16" height="30" fill="var(--up)"/>
+        <line x1="115" y1="36" x2="115" y2="76" stroke="var(--ink3)" stroke-width="2"/><rect x="107" y="46" width="16" height="24" fill="var(--up)"/>
+        <line x1="155" y1="28" x2="155" y2="100" stroke="var(--ink3)" stroke-width="2"/><rect x="145" y="36" width="20" height="56" fill="var(--dn)"/>
+        <text x="60" y="130" font-size="10" fill="var(--goldtxt)">at the top of an uptrend</text>
+      </svg>
+      <p>Buyers engulfed by sellers at the highs — <b>the uptrend's obituary when it prints at resistance.</b></p>
+    </div>
+
+    <div class="card">
+      <h4>Doji</h4>
+      <div class="tag gold">INDECISION</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Doji candle with open equal to close after an uptrend leg">
+        <line x1="45" y1="80" x2="45" y2="118" stroke="var(--ink3)" stroke-width="2"/><rect x="37" y="86" width="16" height="26" fill="var(--up)"/>
+        <line x1="80" y1="55" x2="80" y2="98" stroke="var(--ink3)" stroke-width="2"/><rect x="72" y="62" width="16" height="28" fill="var(--up)"/>
+        <line x1="115" y1="34" x2="115" y2="76" stroke="var(--ink3)" stroke-width="2"/><rect x="107" y="42" width="16" height="26" fill="var(--up)"/>
+        <line x1="155" y1="24" x2="155" y2="72" stroke="var(--ink3)" stroke-width="2"/><rect x="145" y="46" width="20" height="3" fill="var(--ink)"/>
+        <text x="18" y="132" font-size="10" fill="var(--goldtxt)">open = close · the engine stalls</text>
+      </svg>
+      <p>Perfect equality — nobody in control. <b>After a strong leg = the trend is losing its engine: take profits.</b> An entry only with confluence.</p>
+    </div>
+
+    <div class="card">
+      <h4>Dragonfly &amp; Gravestone doji</h4>
+      <div class="tag gold">REJECTION AT THE EXTREME</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Dragonfly doji with long lower tail at support and gravestone doji with long upper tail at resistance">
+        <line x1="15" y1="106" x2="105" y2="106" stroke="var(--gold)" stroke-width="1.3" stroke-dasharray="5 4"/>
+        <line x1="60" y1="40" x2="60" y2="104" stroke="var(--ink3)" stroke-width="2"/><rect x="48" y="40" width="24" height="3" fill="var(--ink)"/>
+        <text x="30" y="128" font-size="10" fill="var(--up)">dragonfly · bullish</text>
+        <line x1="120" y1="34" x2="205" y2="34" stroke="var(--gold)" stroke-width="1.3" stroke-dasharray="5 4"/>
+        <line x1="162" y1="36" x2="162" y2="100" stroke="var(--ink3)" stroke-width="2"/><rect x="150" y="97" width="24" height="3" fill="var(--ink)"/>
+        <text x="128" y="128" font-size="10" fill="var(--dn)">gravestone · bearish</text>
+      </svg>
+      <p>Open=close AND at the extreme: an entire session of one-sided pressure, absorbed. <b>Dragonfly at support = long; gravestone at resistance = short.</b> Location is mandatory.</p>
+    </div>
+
+    <div class="card">
+      <h4>Morning star</h4>
+      <div class="tag up">CAPITULATION · 3 CANDLES</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Morning star: tall bear candle, small pause candle, bull candle closing above the first candle's midpoint">
+        <line x1="60" y1="26" x2="60" y2="92" stroke="var(--ink3)" stroke-width="2"/><rect x="50" y="30" width="20" height="54" fill="var(--dn)"/>
+        <line x1="110" y1="86" x2="110" y2="116" stroke="var(--ink3)" stroke-width="2"/><rect x="102" y="96" width="16" height="10" fill="var(--up)"/>
+        <line x1="160" y1="22" x2="160" y2="88" stroke="var(--ink3)" stroke-width="2"/><rect x="150" y="28" width="20" height="52" fill="var(--up)"/>
+        <line x1="46" y1="57" x2="205" y2="57" stroke="var(--goldtxt)" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <text x="120" y="52" font-size="9.5" fill="var(--goldtxt)">1st body midpoint</text>
+        <text x="14" y="134" font-size="10" fill="var(--goldtxt)">sell → pause → buyers take over</text>
+      </svg>
+      <p>Bear body → small pause → bull body closing <b>above the first body's midpoint</b>. Control transferred. Bottom-of-downtrend at support = powerful reversal long.</p>
+    </div>
+
+    <div class="card">
+      <h4>Evening star</h4>
+      <div class="tag dn">CAPITULATION · 3 CANDLES</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Evening star: tall bull candle, small pause candle, strong bear candle">
+        <line x1="60" y1="34" x2="60" y2="112" stroke="var(--ink3)" stroke-width="2"/><rect x="50" y="44" width="20" height="54" fill="var(--up)"/>
+        <line x1="110" y1="18" x2="110" y2="48" stroke="var(--ink3)" stroke-width="2"/><rect x="102" y="26" width="16" height="10" fill="var(--dn)"/>
+        <line x1="160" y1="30" x2="160" y2="106" stroke="var(--ink3)" stroke-width="2"/><rect x="150" y="40" width="20" height="52" fill="var(--dn)"/>
+        <text x="10" y="134" font-size="10" fill="var(--goldtxt)">buy → hesitate → sellers take over</text>
+      </svg>
+      <p>The mirror: bull → pause → strong bear. <b>Top-of-uptrend at resistance = reversal short.</b> The pause candle can be anything — doji, spinner, either color.</p>
+    </div>
+
+    <div class="card">
+      <h4>Harami / inside bar</h4>
+      <div class="tag gold">INDECISION · DUAL NATURE</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Large mother candle with a small baby candle contained inside its range">
+        <rect x="52" y="26" width="120" height="88" rx="6" fill="var(--blue-dim)"/>
+        <line x1="85" y1="20" x2="85" y2="120" stroke="var(--ink3)" stroke-width="2"/><rect x="73" y="30" width="24" height="80" fill="var(--up)"/>
+        <line x1="140" y1="52" x2="140" y2="92" stroke="var(--ink3)" stroke-width="2"/><rect x="132" y="60" width="16" height="24" fill="var(--dn)"/>
+        <text x="16" y="134" font-size="10" fill="var(--goldtxt)">baby inside the mother's range</text>
+      </svg>
+      <p>The market coils. <b>Strong trend: continuation — trade the mother-bar break, stop beyond its far side.</b> At a top/bottom: reversal. After a level break: "breakout not confirmed yet."</p>
+    </div>
+
+    <div class="card">
+      <h4>Tweezers top / bottom</h4>
+      <div class="tag gold">REJECTION · MATCHED EXTREMES</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Tweezers bottom: bear candle and bull candle with matching lows at a support line">
+        <line x1="15" y1="104" x2="205" y2="104" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="6 5"/>
+        <line x1="85" y1="30" x2="85" y2="102" stroke="var(--ink3)" stroke-width="2"/><rect x="75" y="36" width="20" height="52" fill="var(--dn)"/>
+        <line x1="135" y1="34" x2="135" y2="102" stroke="var(--ink3)" stroke-width="2"/><rect x="125" y="40" width="20" height="52" fill="var(--up)"/>
+        <text x="52" y="128" font-size="10" fill="var(--goldtxt)">same low, opposite verdicts</text>
+      </svg>
+      <p>Second session opens where the first closed and goes straight the other way — the level held twice. <b>Bottom at support = long; top at resistance = short.</b></p>
+    </div>
+
+    <div class="card">
+      <h4>Inside bar FALSE breakout</h4>
+      <div class="tag dn">THE STOP-HUNT SIGNATURE</div>
+      <svg viewBox="0 0 220 140" role="img" aria-label="Inside bar false breakout: price breaks below the mother bar's range and closes back inside, then rallies">
+        <rect x="30" y="30" width="106" height="70" rx="6" fill="var(--blue-dim)"/>
+        <line x1="60" y1="24" x2="60" y2="106" stroke="var(--ink3)" stroke-width="2"/><rect x="50" y="32" width="20" height="66" fill="var(--up)"/>
+        <line x1="103" y1="48" x2="103" y2="88" stroke="var(--ink3)" stroke-width="2"/><rect x="95" y="56" width="16" height="24" fill="var(--dn)"/>
+        <line x1="150" y1="56" x2="150" y2="126" stroke="var(--ink3)" stroke-width="2"/><rect x="142" y="58" width="16" height="34" fill="var(--up)"/>
+        <polyline points="162,70 185,44 205,28" fill="none" stroke="var(--up)" stroke-width="2.5"/>
+        <text x="8" y="138" font-size="10" fill="var(--goldtxt)">breaks out… closes back inside → go</text>
+      </svg>
+      <p>Institutions push through the obvious level, harvest the clustered stops, then drive the REAL move. <b>Entry on the close back inside the mother range; stop beyond the fake-out extreme.</b> The book's best R:R setup — risk 50 to make 400.</p>
+    </div>
+
+    <div class="card">
+      <h4>The validity checklist</h4>
+      <div class="tag mut">BEFORE TRADING ANY PATTERN</div>
+      <p style="margin-top:12px">1 — Formed on <b>4H/daily</b> (1H minimum)?<br>
+      2 — In line with the <b>dominant trend</b>?<br>
+      3 — AT a <b>key level</b> (S/R · S&amp;D · 8/21 MA · 50–61.8% fib · trendline)?<br>
+      4 — <b>Clean anatomy</b> (tail ≥ 2× body · full engulfment · baby fully inside)?<br>
+      5 — <b>≥ 2:1 R:R</b> to the next opposing level?<br><br>
+      <b>Any "no" → skip the trade,</b> however beautiful the candle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARKET STRUCTURE ============ -->
+<section>
+  <div class="daytag">MARKET STRUCTURE</div>
+  <h2>Three regimes, three playbooks</h2>
+  <p class="lede">Diagnose on the 4H/daily/weekly — never on small frames. Trends run ~30% of the time; ranges ~70%; chop is unclassifiable noise you <b>don't trade at all.</b></p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 250" role="img" aria-label="Uptrend built from impulsive moves and retracements, with the previous swing point acting as support for the next impulse">
+      <polyline points="30,210 130,110 175,155 280,60 330,105 445,20" fill="none" stroke="var(--up)" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="130" cy="110" r="4" fill="var(--surface)" stroke="var(--up)" stroke-width="2"/>
+      <circle cx="175" cy="155" r="5" fill="var(--goldtxt)"/>
+      <circle cx="280" cy="60" r="4" fill="var(--surface)" stroke="var(--up)" stroke-width="2"/>
+      <circle cx="330" cy="105" r="5" fill="var(--goldtxt)"/>
+      <line x1="120" y1="110" x2="360" y2="110" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="6 5"/>
+      <text x="45" y="235" font-size="11" fill="var(--ink2)">impulse ↗ retracement ↘ impulse ↗ — enter where the retracement DIES</text>
+      <text x="205" y="132" font-size="10.5" fill="var(--goldtxt)">previous swing = the support that restarts the impulse</text>
+      <text x="470" y="40" font-size="11" fill="var(--ink)" font-weight="700">pros buy the impulse birth;</text>
+      <text x="470" y="58" font-size="11" fill="var(--ink)" font-weight="700">amateurs buy the retracement</text>
+      <text x="470" y="76" font-size="11" fill="var(--ink)" font-weight="700">and donate their stops</text>
+    </svg>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><b>Trending:</b> two moves only — impulsive (with trend) and corrective. The previous swing point or a clean 2-touch trendline (4H/daily, never forced) marks where the next impulse is born.</div>
+    <div class="rule"><b>Ranging:</b> confirm 2 touches per boundary, then three plays — fade the boundaries · trade the breakout · wait for the pullback to the broken level. Boundary overshoots trap breakout traders constantly.</div>
+    <div class="rule"><b>Choppy:</b> no definable boundaries, tight noise — zoom out on the daily to diagnose, then <b>close the chart.</b> Chop is where winners give back their profits.</div>
+    <div class="rule"><b>Top-down veto:</b> weekly → daily → 4H. A perfect signal on your timeframe DIES at a higher-timeframe level — the book's flagship lesson: a textbook daily pin bar bought straight into weekly resistance, and lost.</div>
+  </div>
+</section>
+
+<!-- ============ THE FOUR STRATEGIES ============ -->
+<section>
+  <div class="daytag">THE FOUR STRATEGIES</div>
+  <h2>One frame, four triggers</h2>
+
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="stepbody">
+      <h3>Pin bar — the rejection trade</h3>
+      <p>Trend + pullback + pin AT the level (S/R, or the <b>21 MA as dynamic S/R</b> when no static level exists). Two entries: <b>aggressive</b> — at the pin's close, never miss the move · <b>conservative</b> — limit at 50% of the pin's range, 5:1-class R:R when it fills. Stop beyond the tail; target the next opposing level. The rejection isn't the signal — <b>the location is.</b></p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="stepbody">
+      <h3>Engulfing bar — the capitulation trade</h3>
+      <p>Same frame, stacked confluence: S/R flips · <b>8/21 MA pullbacks</b> · <b>50–61.8% fib</b> ("most major moves retrace 50–61%") · trendlines · supply &amp; demand zones (stronger than S/R — grade them by speed of departure, R:R offered, and 4H/daily origin). In ranges: boundaries, breakout + pullback, or the false-break fade.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="stepbody">
+      <h3>Inside bar — the coil trade</h3>
+      <p>Strong trend pauses → trade the <b>break of the mother bar</b> with the trend; stop beyond the mother's far side. After an S/R breakout, an inside bar means <i>the breakout is not confirmed yet</i> — enter on the inside bar's break, not the level's. Big timeframes, dominant trend, key levels, confluence — or skip.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">4</div>
+    <div class="stepbody">
+      <h3>Inside bar false breakout — the stop-hunt trade</h3>
+      <p>Banks know where the stops cluster: beyond the obvious level. They push through, harvest the liquidity, and drive the real move the other way. When the break <b>closes back inside the mother range</b>, the trap is sprung — enter WITH the institutions, stop beyond the fake-out extreme. The bull-trap at range resistance is the classic. This is the book's crown jewel and its best R:R.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MONEY MANAGEMENT ============ -->
+<section>
+  <div class="daytag">MONEY MANAGEMENT</div>
+  <h2>"The key to the castle"</h2>
+
+  <div class="corerule">
+    <div class="cr-line">minimum <span class="crk up">2:1</span> reward:risk — or the trade doesn't exist</div>
+    <div class="cr-line">risk ≤ <span class="crk v">1–2%</span> of equity per trade · think in dollars, not pips</div>
+    <div class="cr-line"><span class="crk dn">hard stops always</span> — mental stops are account death</div>
+    <div class="cr-note">STOP GOES BEYOND THE PATTERN'S INVALIDATION — PIN TAIL · MOTHER BAR · FAKE-OUT EXTREME — NEVER AT AN ARBITRARY DISTANCE</div>
+  </div>
+
+  <div class="callout"><span class="emj">🧮</span><b>The math IS the edge.</b> Ten trades at 3:1, risking $200 each. Lose seven, win three: −$1,400 + $1,800 = <b>+$400 while losing 70% of the time.</b> You don't need to be right — you need to be paid more when you are. Set the stop and target at entry, then don't look back: the market tells you if you're right, your emotions don't.</div>
+</section>
+
+<!-- ============ THE HOUSE INTEGRATION ============ -->
+<section>
+  <div class="daytag">⚙ HOW IT PLUGS INTO MY SYSTEM</div>
+  <h2>The trigger layer of the cascade</h2>
+  <p class="lede">The Bible's TREND → LEVEL → SIGNAL is the ICC checklist in different words — so the candle layer slots <b>under</b> ICC, not beside it.</p>
+
+  <div class="rules">
+    <div class="rule"><b>In the 4-screenshot cascade:</b> 4h/1h = ICC diagnosis (trend + levels) · 15m = the correction · <b>5m = one of these ten patterns printing at the level.</b> The trigger now has names.</div>
+    <div class="rule"><b>The inside-bar false breakout IS the ICC liquidity grab</b> at candle scale — when the 5m "breaks" against the 1h diagnosis and closes back inside, that's not a failed setup. That's the entry.</div>
+    <div class="rule"><b>Pin bar = the reaction at a reaction level,</b> compressed into one candle. Same event ICC trades, seen close-up.</div>
+    <div class="rule"><b>What the house overrides:</b> soft TPs at the wall + hold-past-broken-target beat the book's set-and-forget targets. Set-and-forget applies to the STOP only. Astro stays the weather layer — candles never decide WHEN.</div>
+  </div>
+
+  <div class="callout"><span class="emj">🌦</span><b>The full stack:</b> ASTRO calls the day's weather → ICC reads the structure → the CANDLE pulls the trigger → MONEY MANAGEMENT keeps the account alive. Weather, not signals — structure decides entries.</div>
+</section>
+
+<footer>CANDLESTICKS · The Candlestick Trading Bible, fully analyzed · vault: Library/Business/Trading/Candlestick bible (full analysis) · Ethan's second brain</footer>
+</div>
+</body>
+</html>
