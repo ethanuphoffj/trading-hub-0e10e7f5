@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow">
+<head>
+<meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STDV — Standard Deviation Projections · Measure the Manipulation, Project the Delivery</title>
@@ -91,23 +92,6 @@
 </style>
 </head>
 <body>
-<!-- T1-CHECKLIST-STRIP v1.4 · synced with Learning/Checklist/Checklist.html — update every strip + the registry on each T1 rev -->
-<details style="max-width:1060px;margin:14px auto 0;padding:0;background:#12161C;border:1px solid rgba(188,131,41,.45);border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
-<summary style="cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 16px;font:12px ui-monospace,'SF Mono',Menlo,monospace;color:#9AA7B4"><b style="color:#E8B04B;letter-spacing:.12em">&#9889; T1 CHECKLIST</b><span style="color:#6B7683">v1.4 &middot; 2026-08-10 &middot; 8 gates</span><span>ASTRO &rarr; ICC + HTF veto &rarr; STDV &rarr; OTE &rarr; MD &rarr; SWEEP + 1m FVG &rarr; RISK &rarr; DISCIPLINE</span><span style="color:#6B7683;margin-left:auto">expand &#9662;</span></summary>
-<ol style="margin:0;padding:4px 20px 14px 40px;color:#9AA7B4;font-size:13px;line-height:1.7">
-<li><b style="color:#E6EDF3">ASTRO</b> — day graded on FORECAST (Watch / Prepare / Execute) &middot; sizes expectation, never direction</li>
-<li><b style="color:#E6EDF3">ICC + HTF VETO</b> — bias from the 4H&rarr;1H&rarr;15m cascade, body-close indications &middot; <b style="color:#E8B04B">check the 4H map FIRST — never trade INTO your own A++ zone / HTF pocket / unswept draw</b></li>
-<li><b style="color:#E6EDF3">STDV</b> — leg off a key open (midnight &middot; 4H &middot; 18:00 &middot; Sunday) &middot; 5m wick/wick fib &middot; mark session highs &amp; lows (Tokyo &middot; London &middot; NY &middot; prior day) &middot; <b style="color:#E8B04B">rungs are targets to trade INTO, never entries at/past &minus;1</b> &middot; <b style="color:#E8B04B">an unmitigated FVG between entry and the rung = a scheduled dip &mdash; enter AT it, never above it</b> &middot; overnight: wait for the midnight leg &middot; never chase past &minus;4</li>
-<li><b style="color:#E6EDF3">OTE</b> — 3m marking: tick high &rarr; body of lowest wick &middot; pocket .705&ndash;.786 &middot; rolling anchor on the tap-and-dip &middot; fallback .5/.618/.66 only with a rejection level</li>
-<li><b style="color:#E6EDF3">MD</b> — 13 gates pass &middot; discretion layer confirmed IN the zone (displacement / LTF MSS) &middot; no SMT no expansion &middot; TP depth from the liquidity map</li>
-<li><b style="color:#E6EDF3">TRIGGER</b> — liquidity swept behind the entry &middot; fade the swept side &middot; enter on the 1m FVG snapback</li>
-<li><b style="color:#E6EDF3">RISK</b> — stop beyond the sweep zone, never mid-gap &middot; <b style="color:#E8B04B">the stop is sacred: moves only toward price, never widened, never cancelled</b> &middot; <b style="color:#E8B04B">never park a stop inside/just past an unmitigated FVG</b> &middot; partial at TP1 always, BE after</li>
-<li><b style="color:#E6EDF3">DISCIPLINE</b> — no chasing (original zone or better) &middot; <b style="color:#E8B04B">after a loss: size down or stand down, never up</b> &middot; <b style="color:#EF5350">2&ndash;3 failed trades in one day = LOCK THE ACCOUNT</b> &middot; one emotional action = session over &middot; let the market do its thing &mdash; no FOMO, no overleveraging, no taking off early (this gate blew the Aug 9 eval)</li>
-</ol>
-<p style="margin:0;padding:0 20px 12px;font:11px ui-monospace,Menlo,monospace;color:#6B7683">full registry: hub GUIDES &rarr; CHECKLIST &middot; full spec: Library/Business/Trading/CLAUDE/T1 &mdash; Trading Technique Spec.md (v1.4)</p>
-</details>
-<!-- /T1-CHECKLIST-STRIP -->
-
 <div class="wrap">
 
 <header>
@@ -137,14 +121,14 @@
   </div>
 
   <div class="toc">
-    <a href="#ch1">01 · The idea</a><a href="#ch2">02 · Settings</a><a href="#ch3">03 · PO3 foundation</a><a href="#ch4">04 · Key opens</a><a href="#ch5">05 · The two legs</a><a href="#ch6">06 · Anchor precision</a><a href="#ch7">07 · Reading the ladder</a><a href="#ch8">08 · SMT</a><a href="#ch9">09 · Breakers</a><a href="#ch10">10 · The MMM engine</a><a href="#ch11">11 · Live trade</a><a href="#ch12">12 · Rulebook</a><a href="#ch13">13 · Dylan's refinement</a>
+    <a href="#ch1">01 · The idea</a><a href="#ch2">02 · Settings</a><a href="#ch3">03 · PO3 foundation</a><a href="#ch4">04 · Key opens</a><a href="#ch5">05 · The two legs</a><a href="#ch6">06 · Anchor precision</a><a href="#ch7">07 · Reading the ladder</a><a href="#ch8">08 · SMT</a><a href="#ch9">09 · Breakers</a><a href="#ch10">10 · The MMM engine</a><a href="#ch11">11 · Live trade</a><a href="#ch12">12 · Rulebook</a><a href="#ch13">13 · The refinement</a>
   </div>
 </header>
 
 <!-- ============ 01 · THE IDEA ============ -->
 <section id="ch1">
   <div class="daytag">01 · THE IDEA — START SIMPLE</div>
-  <h2>The market moves in multiples of its own fake-out</h2>
+  <h2>The delivery moves in multiples of the manipulation leg</h2>
   <p class="lede">Before any jargon, here is the whole concept: before a real move, the market runs a <b>fake move the other way</b> to trap traders (the manipulation). That fake leg has a size. The real move that follows is delivered in <b>multiples of that size</b> — the "standard deviations." One standard deviation = <b>the leg doubled</b>: a 40-point manipulation leg means the −1 level lands 80 points from the leg's origin, −2 adds another 40, and so on. It feels like magic; it's just a measured move run by an algorithm.</p>
 
   <div class="corerule">
@@ -550,11 +534,11 @@
   <div class="callout"><span class="emj">📚</span><b>The graduation requirement is backtesting.</b> Both teachers close the same way: you will not trade this off the video. Confidence comes from <b>backtested data</b> — enough reps that four losses in a row don't shake the fifth entry, enough screen time that you see the model <i>before</i> it forms. Forward-testing a fresh concept is how the method gets abandoned right before it works. Log every projection: which leg, which open, which zone reacted.</div>
 </section>
 
-<!-- ============ 13 · DYLAN'S HOUSE REFINEMENT ============ -->
+<!-- ============ 13 · THE HOUSE REFINEMENT ============ -->
 <section id="ch13">
-  <div class="daytag">13 · HOUSE REFINEMENT — DYLAN'S 5M MARKING · THE −4.5 · THE GOLDEN-POCKET TP</div>
+  <div class="daytag">13 · HOUSE REFINEMENT — 5M MARKING · THE −4.5 · THE GOLDEN-POCKET TP</div>
   <h2>One fib, three jobs: project, complete, cash out</h2>
-  <p class="lede">Dylan's refinement makes the daily marking fast and turns the same drawing into the exit tool. The working leg is keyed <b>on the 5-minute, wick high → wick low</b> — and confirmed there ("confirm wick high / wick low on the STDV 5M"). The ladder gains a <b>−4.5</b>: completion is now read as a <b>−4 to −4.5 band</b>, not a single line. And the <b>0.705 / 0.786 retracement lines stay on the fib</b> — after the ladder completes and price turns, the same tool prices the give-back: <b>the golden pocket of the projected leg is the clean TP</b>, taken or held depending on market discretion.</p>
+  <p class="lede">The refinement makes the daily marking fast and turns the same drawing into the exit tool. The working leg is keyed <b>on the 5-minute, wick high → wick low</b> — and confirmed there ("confirm wick high / wick low on the STDV 5M"). The ladder gains a <b>−4.5</b>: completion is now read as a <b>−4 to −4.5 band</b>, not a single line. And the <b>0.705 / 0.786 retracement lines stay on the fib</b> — after the ladder completes and price turns, the same tool prices the give-back: <b>the golden pocket of the projected leg is the clean TP</b>, taken or held depending on market discretion.</p>
 
   <div class="corerule">
     <div class="cr-line">mark the leg on the <span class="crk g">5M · WICK HIGH → WICK LOW</span> · confirm it on the 5M</div>
@@ -598,7 +582,7 @@
     <div class="stepnum">1</div>
     <div class="stepbody">
       <h3>The 5m wick-to-wick marking <span class="tf-chip">5M</span></h3>
-      <p>Chapters 5–6 remain the deep law — key open decides manipulation (wick→body) vs distribution (wick→wick), anchor on the 1m. Dylan's daily driver compresses it: <b>key the working leg on the 5-minute, wick high → wick low, and confirm the extremes on that same 5m</b>. It's the distribution-style draw run as the standing default — fast to mark, hard to fumble, and aligned with the 5m validation rule the course already demands. When a projection reads wrong, drop back to the ch-5 key-open diagnostic before blaming the ladder.</p>
+      <p>Chapters 5–6 remain the deep law — key open decides manipulation (wick→body) vs distribution (wick→wick), anchor on the 1m. The daily driver compresses it: <b>key the working leg on the 5-minute, wick high → wick low, and confirm the extremes on that same 5m</b>. It's the distribution-style draw run as the standing default — fast to mark, hard to fumble, and aligned with the 5m validation rule the course already demands. When a projection reads wrong, drop back to the ch-5 key-open diagnostic before blaming the ladder.</p>
     </div>
   </div>
 
@@ -606,7 +590,7 @@
     <div class="stepnum">2</div>
     <div class="stepbody">
       <h3>−4.5 — the completion band gets a floor</h3>
-      <p>The course caps the model at −3.5/−4; Dylan runs the ladder one rung deeper. Completion is a <b>band, −4 to −4.5</b> — the extra half-deviation is where the last stops beyond the −4 get swept before the real turn. The strongest reversal setup he names lives exactly there: <b>OTE golden pocket + STDV −4/−4.5 at one price, with a rejection level (FVG · order block · rejection block) on top</b>. Entries at the band's rejection, never mid-ladder.</p>
+      <p>The course caps the model at −3.5/−4; The refinement runs the ladder one rung deeper. Completion is a <b>band, −4 to −4.5</b> — the extra half-deviation is where the last stops beyond the −4 get swept before the real turn. The strongest reversal setup he names lives exactly there: <b>OTE golden pocket + STDV −4/−4.5 at one price, with a rejection level (FVG · order block · rejection block) on top</b>. Entries at the band's rejection, never mid-ladder.</p>
     </div>
   </div>
 
@@ -621,16 +605,31 @@
   <div class="rules">
     <div class="rule"><b>Mark on the 5m, wick to wick.</b> Confirm the wick high / wick low on the 5m before trusting a single level.</div>
     <div class="rule"><b>−4.5 joins the preset.</b> Completion is the −4→−4.5 band — the sweep past −4 is the trap, not the miss.</div>
-    <div class="rule"><b>The band + the pocket = the reversal zone.</b> STDV −4/−4.5 stacked with OTE 0.705–0.786 and a rejection level is the A++ setup (Dylan's strongest stack).</div>
+    <div class="rule"><b>The band + the pocket = the reversal zone.</b> STDV −4/−4.5 stacked with OTE 0.705–0.786 and a rejection level is the A++ setup (the strongest stack).</div>
     <div class="rule"><b>The .705/.786 on THIS fib is the TP.</b> The projected leg's own golden pocket catches the give-back — clean exit, printed in advance.</div>
     <div class="rule"><b>Take vs hold is discretion.</b> The level is mechanical; the decision is the MD layer — structure, SMT, displacement, session. See the MD guide.</div>
-    <div class="rule"><b>Drawings stay on.</b> Position tool + every fib = the running journal. The chart is the trade log (Dylan's rule).</div>
+    <div class="rule"><b>Drawings stay on.</b> Position tool + every fib = the running journal. The chart is the trade log (house rule).</div>
   </div>
 
-  <div class="callout"><span class="emj">🧭</span><b>The method checklist, in Dylan's order.</b> 1 · <b>STDV</b> — 5m wick/wick leg, ladder to −4/−4.5. 2 · <b>OTE</b> — the 0.705–0.786 (fallbacks 0.5/0.618/0.66 only with a rejection level). 3 · <b>Market discretion</b> — FVGs and iFVGs (5m/15m are best), order blocks, rejection blocks, session and structure context deciding whether the level is worth your bullets. The third step is a full guide of its own: the <b>MD tab</b>.</div>
+  <div class="callout"><span class="emj">🧭</span><b>The method checklist, in order.</b> 1 · <b>STDV</b> — 5m wick/wick leg, ladder to −4/−4.5. 2 · <b>OTE</b> — the 0.705–0.786 (fallbacks 0.5/0.618/0.66 only with a rejection level). 3 · <b>Market discretion</b> — FVGs and iFVGs (5m/15m are best), order blocks, rejection blocks, session and structure context deciding whether the level is worth your bullets. The third step is a full guide of its own: the <b>MD tab</b>.</div>
 </section>
 
-<footer>STDV · Standard Deviation Projections · Sources: ell.funded ×3 · BD After Midnight ×4 · Dylan — 5m marking, −4.5, golden-pocket TP · notes: Library/Business/Trading/STDV · Ethan's second brain</footer>
+
+<section id="sourcevideos">
+  <div class="daytag">SOURCE VIDEOS</div>
+  <h2>The source material</h2>
+  <ul style="margin:16px 0 0 22px;color:var(--ink2);font-size:14.5px">
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=3JNwKXbEJZc" target="_blank" rel="noopener">How to project standard deviations ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=-WYZ-F01oYo" target="_blank" rel="noopener">How To Use The STDV ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=tV6Quu8RDsg" target="_blank" rel="noopener">STDV + SMT Theory — Intro ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=TiIenPRpI08" target="_blank" rel="noopener">STDV + SMT Theory — Full ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=r6n1t4vVeqE" target="_blank" rel="noopener">PO3 — The Framework You're Missing ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+    <li style="margin:6px 0"><a href="https://www.youtube.com/watch?v=oAAXLo8hS40" target="_blank" rel="noopener">ICT Breakers — How to Interpret Them ↗</a> — <span style='color:var(--ink3)'>BD After Midnight</span></li>
+  </ul>
+  <p class="lede" style="margin-top:14px;font-size:13.5px">The ell.funded base tutorial and 192-pt recap circulated without public URLs — transcripts live in Library/Business/Trading/STDV.</p>
+</section>
+
+<footer>STDV · Standard Deviation Projections · Sources: ell.funded ×3 · BD After Midnight ×4 · private coaching — 5m marking, −4.5, golden-pocket TP · notes: Library/Business/Trading/STDV</footer>
 </div>
 </body>
 </html>

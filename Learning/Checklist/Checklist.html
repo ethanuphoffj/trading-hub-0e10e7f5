@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow">
+<head>
+<meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trading Checklist · The Technique Registry</title>
+<title>Trading Checklist · Generator &amp; Registry</title>
 <style>
   :root{
     --bg:#0C0F13; --surface:#12161C; --raised:#1A202A; --line:#242C37;
@@ -23,6 +24,33 @@
   .sub{color:var(--ink2);margin-top:12px;max-width:800px}
   .sub b{color:var(--ink)}
 
+  /* ── generator ── */
+  .genbox{background:var(--surface);border:1px solid rgba(188,131,41,.5);border-radius:14px;padding:22px}
+  .genlabel{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--goldtxt);margin-bottom:10px}
+  .mods{display:flex;flex-wrap:wrap;gap:8px}
+  .mod{cursor:pointer;user-select:none;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--ink3);background:var(--raised);transition:all .12s}
+  .mod .role{font-size:10px;letter-spacing:.06em;opacity:.75;margin-left:6px}
+  .mod.on{color:var(--ink);border-color:var(--gold);background:rgba(188,131,41,.14)}
+  .mod.on .role{color:var(--goldtxt)}
+  .genbtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .gbtn{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.08em;border:1px solid var(--line);border-radius:8px;padding:8px 16px;color:var(--ink2);background:var(--raised)}
+  .gbtn:hover{border-color:var(--gold);color:var(--goldtxt)}
+  .gbtn.primary{border-color:rgba(188,131,41,.6);color:var(--goldtxt)}
+
+  .phase{margin-top:26px}
+  .phasetag{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--goldtxt);border:1px solid rgba(188,131,41,.45);border-radius:999px;padding:4px 14px;margin-bottom:6px}
+  .phasetag .pnote{color:var(--ink3);letter-spacing:.04em;text-transform:none}
+  ol.gen{counter-reset:c;list-style:none;margin-top:6px}
+  ol.gen li{position:relative;display:flex;gap:12px;align-items:flex-start;padding:11px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;background:var(--surface);margin-top:8px;font-size:14px;color:var(--ink2)}
+  ol.gen li.exec-core{border-left-color:var(--goldtxt);background:rgba(188,131,41,.07)}
+  ol.gen li b{color:var(--ink)}
+  ol.gen li input[type=checkbox]{margin-top:4px;accent-color:#BC8329;width:15px;height:15px;flex:none;cursor:pointer}
+  ol.gen li.done{opacity:.45}
+  ol.gen li.done .itxt{text-decoration:line-through}
+  .mchip{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--goldtxt);border:1px solid rgba(188,131,41,.4);border-radius:999px;padding:2px 9px;margin-top:3px}
+  .empty{color:var(--ink3);font-size:13.5px;margin-top:8px;font-family:var(--mono)}
+
+  /* ── registry ── */
   details.tech{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-top:16px;overflow:hidden}
   details.tech[open]{border-color:rgba(188,131,41,.5)}
   details.tech summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:16px 20px}
@@ -39,6 +67,7 @@
   .oneline b{color:var(--goldtxt)}
 
   h3.sec{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--goldtxt);margin:24px 0 6px;text-transform:uppercase}
+  h2.big{font-size:26px;letter-spacing:-.01em;margin:44px 0 4px}
   ol.check{counter-reset:c;list-style:none;margin-top:8px}
   ol.check li{position:relative;padding:11px 14px 11px 52px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;background:var(--surface);margin-top:8px;font-size:14px;color:var(--ink2)}
   ol.check li b{color:var(--ink)}
@@ -54,18 +83,39 @@
   .callout b{color:var(--ink)}
 
   footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;font-family:var(--mono);font-size:12px;color:var(--ink3);line-height:1.6}
+  @media print{.genbox,.mods,.genbtns,details.tech,.callout,footer{display:none}.wrap{padding:10px}body{background:#fff;color:#000}ol.gen li{color:#222;border-color:#ccc;background:#fff}ol.gen li b{color:#000}.phasetag{color:#000;border-color:#999}.kicker,h1 .thin{color:#555}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="kicker">Trading Checklist · The Technique Registry · Living Doc</div>
-  <h1>Trading Checklist <span class="thin">— every version of the technique, one page</span></h1>
-  <p class="sub">The house technique, codified and versioned. The <b>current version sits at the top, expanded</b> — its simplified checklist is what runs before every trade, and the same checklist is pinned as a strip at the top of every guide page (ICC · CANDLES · ASTRO · OTE · STDV · MD · ICT). Older versions collapse to <b>name + date</b> and stay as history. Technique changes come from live trading; each one bumps the version in the T1 spec's Revision Log and lands here as the new top entry.</p>
+  <div class="kicker">Trading Checklist · Generator &amp; Technique Registry · Living Doc</div>
+  <h1>Checklist <span class="thin">— built for the stack you're running</span></h1>
+  <p class="sub">Select the layers in play and the generator assembles the pre-trade checklist in run order: <b>context &amp; bias → location &amp; map → execution trigger → risk → discipline</b>. STDV and OTE items carry the execution weight; VOLUME and MD feed market bias and discretion; RISK and DISCIPLINE are always included. The full T1 registry (versions + revision log) lives below.</p>
 </header>
 
-<!-- ============ T1 v1.0 — CURRENT ============ -->
+<!-- ══════════ GENERATOR ══════════ -->
+<div class="genbox">
+  <div class="genlabel">1 · Select the layers in play</div>
+  <div class="mods" id="mods"></div>
+  <div class="genbtns">
+    <button class="gbtn primary" onclick="selectPreset('t1')">T1 STACK</button>
+    <button class="gbtn" onclick="selectPreset('all')">ALL</button>
+    <button class="gbtn" onclick="selectPreset('none')">NONE</button>
+    <span style="flex:1"></span>
+    <button class="gbtn" onclick="resetTicks()">RESET TICKS</button>
+    <button class="gbtn" onclick="copyList()" id="copybtn">COPY</button>
+    <button class="gbtn" onclick="window.print()">PRINT</button>
+  </div>
+</div>
+
+<div id="out"></div>
+
+<!-- ══════════ REGISTRY ══════════ -->
+<h2 class="big">The Technique Registry</h2>
+<p class="sub">The house technique, codified and versioned. The current version sits at the top, expanded; older versions collapse to name + date and stay as history. Technique changes come from live trading; each one bumps the version in the T1 spec's Revision Log and lands here as the new top entry.</p>
+
 <details class="tech" open>
   <summary>
     <span class="tname">T1</span>
@@ -86,7 +136,7 @@
       <li><b>MD</b> — the 13 gates pass. A mechanical level is never enough alone: the discretion layer (FVG/iFVG · CE · order block · breaker · rejection block) must confirm <b>inside the zone</b> — displacement candle or LTF MSS, never the bare touch. <b>No SMT, no expansion.</b> TP depth comes from the liquidity map, not the fib.</li>
       <li><b>TRIGGER</b> — a liquidity pool was <b>swept</b> behind the entry (the one backtest-proven ICT rule). Direction = fade the swept side. Entry form = the <b>1m FVG snapback</b> inside the pocket.</li>
       <li><b>RISK</b> — stop beyond the sweep zone / structural invalidation, never mid-gap. <b>The stop is sacred: it moves only toward price (BE / trail) — never widened, never cancelled.</b> <b>Stops respect the gap map: never park a stop inside or just past an unmitigated FVG — quick moves leave gaps, price comes back for them (double after breakouts).</b> If a scheduled dip turns against the position: close it — the quick trade TO the gap beats holding through it. Partial at TP1 always, breakeven after. Split A+B entries share one trade's total risk.</li>
-      <li><b>DISCIPLINE</b> — <b>no chasing</b>: re-entry only at the original zone or better. <b>After a loss: size down or stand down — never up.</b> One emotional action = done for the session; write the log instead. <b>2–3 failed trades in one day = LOCK THE ACCOUNT</b> — done until tomorrow, no fourth attempt. <b>Let the market do its thing — no FOMO, no overleveraging, no taking off early.</b> (This gate blew the Aug 9 eval: −$2,200 — while the drawn short would have PASSED it.)</li>
+      <li><b>DISCIPLINE</b> — <b>no chasing</b>: re-entry only at the original zone or better. <b>After a loss: size down or stand down — never up.</b> One emotional action = done for the session; write the log instead. <b>2–3 failed trades in one day = LOCK THE ACCOUNT</b> — done until tomorrow, no fourth attempt. <b>Let the market do its thing — no FOMO, no overleveraging, no taking off early.</b> (This gate failed on the 2026-08-09 eval: −$2,200 — while the drawn short would have PASSED it.)</li>
     </ol>
 
     <h3 class="sec">The stack — what each layer owns</h3>
@@ -97,18 +147,19 @@
       <tr><td class="mono"><b>STDV</b></td><td>Where price is going — the projected map</td><td class="mono">0 · .5 · .705 · .786 · 1 · −1 · −2 · −2.5 · −3.5 · −4 · −4.5</td></tr>
       <tr><td class="mono"><b>OTE</b></td><td>The exact entry price — the pocket</td><td class="mono">.705–.786 · 3m marking · rolling anchor</td></tr>
       <tr><td class="mono"><b>MD</b></td><td>Trade or no trade · TP depth — the veto</td><td class="mono">13 gates · in-zone confirmation · SMT</td></tr>
+      <tr><td class="mono"><b>VOLUME</b></td><td>Market condition &amp; the value map — bias context</td><td class="mono">balance/imbalance · VA edges · naked POCs · DVA/AVWAP</td></tr>
       <tr><td class="mono"><b>ICT layer</b></td><td>The trigger form — entry refinement only</td><td class="mono">sweep required · 1m FVG · no hours/bias extras</td></tr>
     </table>
 
-    <div class="callout">📜 <b>Full definition:</b> `Library/Business/Trading/CLAUDE/T1 — Trading Technique Spec.md` — every rule in full, the 10-dial table the backtest will sweep, and the Revision Log. The deep guides live on the other tabs: ICC · CANDLES · ASTRO · OTE · STDV · MD · ICT.</div>
+    <div class="callout">📜 <b>Full definition:</b> `Library/Business/Trading/CLAUDE/T1 — Trading Technique Spec.md` — every rule in full, the 10-dial table the backtest will sweep, and the Revision Log. The deep guides live on the other tabs: ICC · CANDLES · ASTRO · OTE · STDV · MD · VOLUME · ICT.</div>
 
     <h3 class="sec">Revision log</h3>
     <table class="spec">
       <tr><th>Version</th><th>Date</th><th>Change</th></tr>
       <tr><td class="mono"><b>v1.4</b></td><td class="mono">2026-08-10</td><td>The day-lock: 2–3 failed trades in one day = lock the account (gate 8).</td></tr>
       <tr><td class="mono"><b>v1.3</b></td><td class="mono">2026-08-10</td><td>Mark out session highs &amp; lows (Tokyo · London · NY · prior day) added to gate 3.</td></tr>
-      <tr><td class="mono"><b>v1.2</b></td><td class="mono">2026-08-10</td><td><b>The gap-map rev</b> — the eval's morning-after shots (−$2,200 total): stops respect the gap map (never inside/just past an unmitigated FVG) · the retrace is itself a trade (close + quick trade TO the gap) · TPs at confluence (the −2 completed right between the .886) · the mantra: let the market do its thing — no FOMO, no overleveraging, no taking off early.</td></tr>
-      <tr><td class="mono"><b>v1.1</b></td><td class="mono">2026-08-10</td><td><b>The discipline rev</b> — from the <b>blown</b> Aug 9–10 eval (long into own 4H short zone, revenge 15-micro add, stop cancelled): HTF veto folded into gate 2 · STDV rungs-are-targets + mind-the-retrace (the FVG dip that killed it) + midnight-wait · stop-is-sacred · new DISCIPLINE gate 8. Checklist = <b>8 gates</b>.</td></tr>
+      <tr><td class="mono"><b>v1.2</b></td><td class="mono">2026-08-10</td><td><b>The gap-map rev</b> — the eval's morning-after review (−$2,200 total): stops respect the gap map (never inside/just past an unmitigated FVG) · the retrace is itself a trade (close + quick trade TO the gap) · TPs at confluence (the −2 completed right between the .886) · the mantra: let the market do its thing — no FOMO, no overleveraging, no taking off early.</td></tr>
+      <tr><td class="mono"><b>v1.1</b></td><td class="mono">2026-08-10</td><td><b>The discipline rev</b> — from the <b>blown</b> 2026-08-09/10 eval (long into own 4H short zone, revenge 15-micro add, stop cancelled): HTF veto folded into gate 2 · STDV rungs-are-targets + mind-the-retrace (the FVG dip that killed it) + midnight-wait · stop-is-sacred · new DISCIPLINE gate 8. Checklist = <b>8 gates</b>.</td></tr>
       <tr><td class="mono"><b>v1.0</b></td><td class="mono">2026-08-10</td><td>Initial codification — the five-layer stack + the ICT entry layer from the 25k backtest; 10 dials flagged for testing.</td></tr>
     </table>
 
@@ -117,12 +168,119 @@
 
 <!-- ============ FUTURE VERSIONS STACK ABOVE THIS LINE (newest first, current one open, older ones collapsed) ============ -->
 
-<div class="callout" style="margin-top:26px">🔁 <b>How versions work:</b> Ethan trades live and refines the technique. Each change is proposed as a Revision Log bump on the T1 spec (v1.0 → v1.1 → … → T2), and this page gets the new entry at the top — expanded, marked ACTIVE — while the old one collapses to name + date and flips to RETIRED. The checklist strip pinned on every guide page updates in the same pass (its sync marker: <span style="font-family:var(--mono);font-size:12px">T1-CHECKLIST-STRIP</span>). Once a version feels settled, the backtest engine gets built Brendan's way and the version gets tested for real.</div>
+<div class="callout" style="margin-top:26px">🔁 <b>How versions work:</b> the technique is refined through live trading. Each change is proposed as a Revision Log bump on the T1 spec (v1.0 → v1.1 → … → T2), and this page gets the new entry at the top — expanded, marked ACTIVE — while the old one collapses to name + date and flips to RETIRED. The generator's item bank updates in the same pass so generated checklists always reflect the active version. Once a version feels settled, the backtest engine gets built and the version gets tested for real.</div>
 
 <footer>
-  TRADING CHECKLIST · THE TECHNIQUE REGISTRY · created 2026-08-10 · current: T1 v1.4 (8 gates) · the strip at the top of every guide page mirrors the active version's simplified checklist · full spec + backtest skill + Trade Auditor: Library/Business/Trading/CLAUDE · hub GUIDES → CHECKLIST is the live version
+  TRADING CHECKLIST · GENERATOR &amp; TECHNIQUE REGISTRY · created 2026-08-10 · generator added 2026-08-23 · current: T1 v1.4 (8 gates) · full spec + backtest skill + Trade Auditor: Library/Business/Trading/CLAUDE · hub GUIDES → CHECKLIST is the live version
 </footer>
 
 </div>
+
+<script>
+// ══════════ ITEM BANK — synced to T1 v1.4 + the guide rulebooks. Update on every version bump. ══════════
+const MODULES = [
+  {id:"astro",  label:"ASTRO",   role:"day context"},
+  {id:"icc",    label:"ICC",     role:"bias"},
+  {id:"volume", label:"VOLUME",  role:"bias · value map"},
+  {id:"md",     label:"MD",      role:"discretion"},
+  {id:"stdv",   label:"STDV",    role:"execution"},
+  {id:"ote",    label:"OTE",     role:"execution"},
+  {id:"candles",label:"CANDLES", role:"trigger"},
+  {id:"ict",    label:"ICT",     role:"trigger"},
+];
+const T1_PRESET = ["astro","icc","stdv","ote","md","ict"];
+
+const PHASES = [
+  {id:"ctx",  title:"1 · CONTEXT & BIAS",     note:"what kind of day, which direction"},
+  {id:"loc",  title:"2 · LOCATION & THE MAP", note:"where the trade is allowed to exist"},
+  {id:"exe",  title:"3 · EXECUTION TRIGGER",  note:"STDV + OTE carry the execution weight"},
+  {id:"risk", title:"4 · RISK",               note:"always included"},
+  {id:"disc", title:"5 · DISCIPLINE",         note:"always included"},
+];
+
+// mod:null = always included. core:true = execution-core highlight.
+const BANK = [
+  {mod:"astro", phase:"ctx", text:"<b>Day grade</b> — FORECAST says Watch / Prepare / Execute. Astro sizes expectation and volatility — never direction."},
+  {mod:"icc", phase:"ctx", text:"<b>Cascade bias</b> — 4H → 1H → 15m; indication = body close past the previous push (wicks don't count); enter on continuation, never the indication candle."},
+  {mod:"icc", phase:"ctx", text:"<b>HTF veto</b> — check the 4H map FIRST: never trade INTO your own A++ zone, HTF pocket, or unswept draw — an LTF setup pointing into the HTF magnet makes you the liquidity."},
+  {mod:"volume", phase:"ctx", text:"<b>Market condition</b> — balanced or imbalanced, and on which timeframe? Profile shape (D-shaped or skewed), VWAP slope, inside or outside value. Every downstream rule flips on this answer."},
+  {mod:"volume", phase:"ctx", text:"<b>Bias weight</b> — the bigger the profile, the bigger the vote: larger-timeframe value shifts outrank small-profile signals; small-profile break + large-profile acceptance in the same direction is the A+ context."},
+  {mod:"md", phase:"ctx", text:"<b>Trend · bias · draw</b> — all three named before any level is considered. No draw on liquidity = no trade thesis."},
+  {mod:"volume", phase:"loc", text:"<b>Value map</b> — location from prior ESTABLISHED value only: composite VA edges, naked POCs, HVN edges, DVA/AVWAP bands. Never a developing profile; acceptance = time + space, a wick is a rejection."},
+  {mod:"stdv", phase:"loc", core:true, text:"<b>The ladder</b> — manipulation leg off a key open (midnight EST · 4H · 18:00 futures · Sunday weekly), marked 5m wick high → wick low. Session highs &amp; lows marked (Tokyo · London · NY · prior day)."},
+  {mod:"stdv", phase:"loc", core:true, text:"<b>Rungs are targets</b> — trade INTO them, never enter in the move's direction at/past −1. −2/−2.5 = decision zone · −3.5/−4 = completion · −4.5 extended. Never chase past −4."},
+  {mod:"stdv", phase:"loc", core:true, text:"<b>The retrace path</b> — an unmitigated FVG between entry and the rung is a scheduled dip: enter AT the gap, never above it. Overnight: wait for the midnight leg to print."},
+  {mod:"ote", phase:"exe", core:true, text:"<b>The pocket</b> — 3m marking: tick high → body of the lowest wick. Pocket .705–.786, the .705 is the trigger line. Rolling anchor on the tap-and-dip. An OTE is dead once price breaks its 1."},
+  {mod:"ote", phase:"exe", core:true, text:"<b>The fallback ladder</b> — .5 / .618 / .66 only with a marked rejection level guarding the price."},
+  {mod:"md", phase:"exe", text:"<b>The 13 gates</b> — a rejection level (FVG/iFVG · CE · order block · breaker · rejection block) guards the price and confirms IN the zone (displacement / LTF MSS), never the bare touch. No SMT, no expansion. TP depth from the liquidity map, not the fib."},
+  {mod:"volume", phase:"exe", text:"<b>Flow confirmation</b> — order flow confirms, never initiates: at the level, look for absorption / OI flush / delta flip; in-sync flow = go with it, no fade. Never fade the 2nd standard deviation in a trending session."},
+  {mod:"ict", phase:"exe", text:"<b>The sweep trigger</b> — a liquidity pool was swept behind the entry (the backtest-proven rule). Fade the swept side; entry form = the 1m FVG snapback inside the pocket."},
+  {mod:"candles", phase:"exe", text:"<b>The trigger candle</b> — the candle at the level is one of the three events (reversal · continuation · indecision) from the ten-pattern bank; no qualified pattern, no trigger."},
+  {mod:null, phase:"risk", text:"<b>The stop</b> — beyond the sweep zone / structural invalidation, never mid-gap. The stop is sacred: it moves only toward price (BE / trail) — never widened, never cancelled. Never park a stop inside or just past an unmitigated FVG."},
+  {mod:null, phase:"risk", text:"<b>The exit frame</b> — partial at TP1 always, breakeven after. Split A+B entries share one trade's total risk. If a scheduled dip turns against the position: close it — the quick trade TO the gap beats holding through it."},
+  {mod:"volume", phase:"risk", text:"<b>Sweep-aware sizing</b> — if the stop must live beyond a sweep zone, halve the size: same dollar risk, survives the hunt. Invalidate on structure, not on touch."},
+  {mod:null, phase:"disc", text:"<b>No chasing</b> — re-entry only at the original zone or better. After a loss: size down or stand down — never up."},
+  {mod:null, phase:"disc", text:"<b>The lock</b> — one emotional action = done for the session (write the log instead). 2–3 failed trades in one day = LOCK THE ACCOUNT — done until tomorrow, no fourth attempt."},
+  {mod:null, phase:"disc", text:"<b>Let the market do its thing</b> — no FOMO, no overleveraging, no taking off early."},
+];
+
+const modsEl = document.getElementById("mods");
+const outEl = document.getElementById("out");
+let selected = new Set(JSON.parse(localStorage.getItem("cl.mods") || "null") || T1_PRESET);
+
+function renderMods(){
+  modsEl.innerHTML = "";
+  MODULES.forEach(m=>{
+    const d = document.createElement("div");
+    d.className = "mod" + (selected.has(m.id) ? " on" : "");
+    d.innerHTML = m.label + '<span class="role">' + m.role + '</span>';
+    d.onclick = ()=>{ selected.has(m.id) ? selected.delete(m.id) : selected.add(m.id); persist(); renderAll(); };
+    modsEl.appendChild(d);
+  });
+}
+function persist(){ localStorage.setItem("cl.mods", JSON.stringify([...selected])); }
+function selectPreset(p){
+  selected = new Set(p==="all" ? MODULES.map(m=>m.id) : p==="t1" ? T1_PRESET : []);
+  persist(); renderAll();
+}
+function items(){ return BANK.filter(it => it.mod===null || selected.has(it.mod)); }
+function renderOut(){
+  outEl.innerHTML = "";
+  let n = 0;
+  PHASES.forEach(ph=>{
+    const list = items().filter(it=>it.phase===ph.id);
+    if(!list.length) return;
+    const sec = document.createElement("div"); sec.className = "phase";
+    sec.innerHTML = '<div class="phasetag">' + ph.title + ' <span class="pnote">· ' + ph.note + '</span></div>';
+    const ol = document.createElement("ol"); ol.className = "gen";
+    list.forEach(it=>{
+      n++;
+      const li = document.createElement("li");
+      if(it.core) li.className = "exec-core";
+      const chip = it.mod ? MODULES.find(m=>m.id===it.mod).label : "ALWAYS";
+      li.innerHTML = '<input type="checkbox" onchange="this.parentElement.classList.toggle(\'done\',this.checked)"><span class="itxt" style="flex:1">' + it.text + '</span><span class="mchip">' + chip + '</span>';
+      ol.appendChild(li);
+    });
+    sec.appendChild(ol); outEl.appendChild(sec);
+  });
+  if(!n) outEl.innerHTML = '<p class="empty">No layers selected — pick the guides you\'re running above, or hit T1 STACK.</p>';
+}
+function renderAll(){ renderMods(); renderOut(); }
+function resetTicks(){ outEl.querySelectorAll("input[type=checkbox]").forEach(c=>{ c.checked=false; c.parentElement.classList.remove("done"); }); }
+function copyList(){
+  let txt = "PRE-TRADE CHECKLIST — " + [...selected].map(s=>s.toUpperCase()).join(" + ") + "\n";
+  PHASES.forEach(ph=>{
+    const list = items().filter(it=>it.phase===ph.id);
+    if(!list.length) return;
+    txt += "\n" + ph.title + "\n";
+    list.forEach(it=>{ txt += "  [ ] " + it.text.replace(/<[^>]+>/g,"").replace(/&amp;/g,"&") + "\n"; });
+  });
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b = document.getElementById("copybtn"); b.textContent = "COPIED ✓";
+    setTimeout(()=>b.textContent="COPY", 1500);
+  });
+}
+renderAll();
+</script>
 </body>
 </html>
